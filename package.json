@@ -1,0 +1,28 @@
+{
+  "name": "@erica/ui",
+  "version": "1.0.0",
+  "description": "my ui component library",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build:lib": "tsup",
+    "build:app": "vite build"
+  },
+  "keywords": [],
+  "author": "Erica Gong",
+  "license": "MIT",
+  "packageManager": "pnpm@10.18.3",
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^5.0.4",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.10"
+  }
+}
