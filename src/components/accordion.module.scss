@@ -1,0 +1,21 @@
+// ❌ 5. 중첩 규칙 오류 (& 중복)
+.card {
+  & &__inner {
+    padding: 10px;
+  }
+}
+
+// ❌ 6. 빈 줄 규칙 위반
+.button {
+  color: white;
+  background: #fff;
+}
+
+// ✅ 7. 올바른 예시 (비교용)
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+  background-color: #f8f8f8;
+}

@@ -1,0 +1,17 @@
+# Build outputs
+dist
+node_modules
+
+# Configs / logs
+package-lock.json
+pnpm-lock.yaml
+*.log
+
+# Compiled types
+*.d.ts
+
+# Storybook builds
+storybook-static
+
+# Misc
+coverage
