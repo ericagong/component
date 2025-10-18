@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { Accordion } from '@/components/Accordion';
+import { Button } from '@/components/Button';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Accordion />
+    <Button label='test' />
   </React.StrictMode>,
 );
