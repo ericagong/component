@@ -1,0 +1,23 @@
+# ====== Husky pre-push Hook ======
+# push 전에 단위 테스트 + UI 테스트 실행
+# 목적: 깨진 컴포넌트 로직이 main 브랜치에 합쳐지는 것 방지
+
+echo "🧪 Running test suites (unit + ui)..."
+
+pnpm test:unit && pnpm test:ui || {
+  echo ""
+  echo "❌ Test suite failed. Push aborted."
+  echo "💡 Please fix the errors above before pushing."
+  echo ""
+  exit 1
+}
+
+echo "🏗️ Building library..."
+
+pnpm build:lib || {
+  echo ""
+  echo "❌ Library build failed. Push aborted."
+  exit 1
+}
+
+echo "✅ All tests passed! Safe to push 🚀"
