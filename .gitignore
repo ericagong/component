@@ -55,6 +55,7 @@ coverage/
 *.scss.map
 .cache/
 .stylelintcache
+.eslintcache
 
 # ===============================
 # 🚀 Temporary files
