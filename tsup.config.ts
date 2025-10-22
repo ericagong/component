@@ -6,5 +6,9 @@ export default defineConfig({
   dts: true,
   sourcemap: true,
   clean: true,
-  external: ['react', 'react-dom', 'react/jsx-runtime'],
+  outDir: 'dist',
+  target: 'esnext',
+  minify: false,
+  splitting: false,
+  external: ['react', 'react-dom', 'react/jsx-runtime'], // react 중복 번들링 방지
 });

@@ -2,30 +2,63 @@
   "name": "@erica/ui",
   "version": "1.0.0",
   "description": "my ui component library",
+  "keywords": [
+    "erica",
+    "react",
+    "ui",
+    "component",
+    "components"
+  ],
+  "author": "Erica Gong",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ericagong/component.git"
+  },
+  "homepage": "https://update-page-name.vercel.app",
   "type": "module",
-  "main": "index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "private": false,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
-    "dev": "vite",
+    "build": "pnpm build:lib && pnpm build:app",
     "build:lib": "tsup",
     "build:app": "vite build",
+    "pack:lib": "pnpm build:lib && pnpm pack",
+    "prepublishOnly": "pnpm build:lib",
+    "dev:app": "vite",
+    "dev:component": "storybook dev -p 6006",
+    "build:component": "storybook build",
+    "test": "pnpm test:unit && pnpm test:component",
+    "test:unit": "vitest run --config vitest.config.ts",
+    "test:component": "node tools/setup-playwright.js && vitest run --config vite.config.ts --project storybook",
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:fix": "pnpm lint:js:fix && pnpm lint:style:fix",
     "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:js:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:style": "stylelint '**/*.{css,scss}'",
     "lint:style:fix": "stylelint '**/*.{css,scss}' --fix",
-    "format": "prettier --write .",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "format": "prettier --write ."
   },
-  "keywords": [],
-  "author": "Erica Gong",
-  "license": "MIT",
   "engines": {
     "node": ">=20 <25",
     "pnpm": ">=9"
   },
-  "packageManager": "pnpm@10.18.3",
+  "packageManager": "pnpm@10.19.0+sha512.c9fc7236e92adf5c8af42fd5bf1612df99c2ceb62f27047032f4720b33f8eacdde311865e91c411f2774f618d82f320808ecb51718bfa82c060c4ba7c76a32b8",
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
@@ -33,13 +66,16 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",
     "@eslint/js": "^9.37.0",
+    "@mdx-js/react": "^3.1.1",
     "@storybook/addon-a11y": "^9.1.12",
     "@storybook/addon-docs": "^9.1.12",
     "@storybook/addon-vitest": "^9.1.12",
     "@storybook/react-vite": "^9.1.12",
+    "@storybook/test": "^8.6.14",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.8.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.0.4",
@@ -53,6 +89,7 @@
     "eslint-plugin-react-hooks": "^7.0.0",
     "eslint-plugin-storybook": "^9.1.12",
     "jsdom": "^27.0.0",
+    "markdown-to-jsx": "^7.7.16",
     "playwright": "^1.56.1",
     "prettier": "^3.6.2",
     "sass-embedded": "^1.93.2",
