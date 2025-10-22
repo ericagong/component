@@ -38,7 +38,10 @@
     "prepare": "husky",
     "build:lib": "tsup",
     "pack:lib": "pnpm build:lib && pnpm pack",
+    "changeset": "changeset",
+    "version:release": "pnpm changeset version",
     "prepublishOnly": "pnpm build:lib",
+    "publish:release": "pnpm build:lib && pnpm changeset publish",
     "dev:stories": "storybook dev -p 6006",
     "build:stories": "storybook build",
     "test": "pnpm test:unit && pnpm test:ui",
@@ -63,6 +66,7 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.7",
     "@chromatic-com/storybook": "^4.1.1",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
@@ -101,6 +105,7 @@
     "stylelint-config-standard-scss": "^16.0.0",
     "stylelint-order": "^7.0.0",
     "tsup": "^8.5.0",
+    "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.1",
     "vite": "^7.1.10",
