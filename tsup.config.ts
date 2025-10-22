@@ -1,12 +1,5 @@
 // 라이브러리 배포용 설정
-
-import path from 'node:path';
-
 import { defineConfig } from 'tsup';
-
-console.log('🧩 [TSUP CONFIG] loaded ✅');
-console.log('cwd:', process.cwd());
-console.log('entry check:', path.resolve('src/index.ts'));
 
 export default defineConfig({
   entry: ['src/index.ts'], // 루트 기준
