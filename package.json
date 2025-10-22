@@ -16,7 +16,6 @@
     "url": "https://github.com/ericagong/component.git"
   },
   "homepage": "https://update-page-name.vercel.app",
-
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -35,27 +34,23 @@
     "access": "public",
     "registry": "https://registry.npmjs.org"
   },
-
   "scripts": {
+    "prepare": "husky",
     "build:lib": "tsup",
     "pack:lib": "pnpm build:lib && pnpm pack",
     "prepublishOnly": "pnpm build:lib",
-
     "dev:stories": "storybook dev -p 6006",
     "build:stories": "storybook build",
-    
     "test": "pnpm test:unit && pnpm test:ui",
     "test:unit": "vitest run --config tools/test/vitest.config.unit.ts",
     "test:ui": "vitest run --config tools/test/vitest.config.ui.ts",
     "test:stories": "node tools/test/setup-playwright.js && vitest run --config tools/build/vite.config.stories.ts --project storybook",
-    
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:fix": "pnpm lint:js:fix && pnpm lint:style:fix",
     "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:js:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:style": "stylelint '**/*.{css,scss}'",
     "lint:style:fix": "stylelint '**/*.{css,scss}' --fix",
-    
     "format": "prettier --write ."
   },
   "engines": {
@@ -69,6 +64,8 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.1.1",
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@eslint/js": "^9.37.0",
     "@mdx-js/react": "^3.1.1",
     "@storybook/addon-a11y": "^9.1.12",
@@ -92,7 +89,9 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.0",
     "eslint-plugin-storybook": "^9.1.12",
+    "husky": "^9.1.7",
     "jsdom": "^27.0.0",
+    "lint-staged": "^16.2.5",
     "markdown-to-jsx": "^7.7.16",
     "playwright": "^1.56.1",
     "prettier": "^3.6.2",
