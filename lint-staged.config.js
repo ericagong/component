@@ -1,10 +1,12 @@
 export default {
   '*.{ts,tsx,js,jsx}': (files) => {
     const fileList = files.join(' ');
+
     return [`pnpm lint:js:fix ${fileList}`, `pnpm format ${fileList}`];
   },
   '*.{scss,css}': (files) => {
     const fileList = files.join(' ');
+
     return [`pnpm lint:style:fix ${fileList}`, `pnpm format ${fileList}`];
   },
   '*.{md,json,yml,yaml}': ['pnpm format'],

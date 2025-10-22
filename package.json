@@ -48,9 +48,9 @@
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:fix": "pnpm lint:js:fix && pnpm lint:style:fix",
     "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:js:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "lint:js:fix": "eslint --fix --cache",
     "lint:style": "stylelint '**/*.{css,scss}'",
-    "lint:style:fix": "stylelint '**/*.{css,scss}' --fix",
+    "lint:style:fix": "stylelint '**/*.{css,scss}' --fix --cache",
     "format": "prettier --write ."
   },
   "engines": {

@@ -1,1 +1,11 @@
-pnpm lint-staged
+# ====== Husky pre-commit Hook ======
+# 커밋 전에 lint-staged 실행
+
+echo "🧹 Running lint-staged..."
+
+pnpm lint-staged || {
+  echo "❌ Lint-staged failed. Commit aborted."
+  exit 1
+}
+
+echo "✅ lint-staged passed!"
