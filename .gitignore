@@ -14,7 +14,7 @@ package-lock.json
 # ===============================
 *.tsbuildinfo
 dist/
-build/
+./build/
 out/
 
 # ===============================

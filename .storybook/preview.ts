@@ -1,3 +1,5 @@
+// storybook 전역 데코레이터
+
 import '../src/styles/index.scss';
 import type { Preview } from '@storybook/react-vite';
 

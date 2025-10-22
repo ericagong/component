@@ -1,4 +1,3 @@
-// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
 import storybook from 'eslint-plugin-storybook';
 import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
@@ -14,7 +13,7 @@ export default [
   prettier,
   {
     // 전역 규칙
-    ignores: ['node_modules', 'dist'],
+    ignores: ['node_modules', 'dist', 'package-lock.json', 'pnpm-lock.yaml', 'package.json'],
   },
   {
     // entry(파일 집합) 별 규칙
