@@ -36,7 +36,7 @@
   },
   "scripts": {
     "prepare": "husky",
-    "build:lib": "tsup",
+    "build:lib": "tsup --config tools/tsup.config.js",
     "pack:lib": "pnpm build:lib && pnpm pack",
     "prepublishOnly": "pnpm build:lib",
     "dev:stories": "storybook dev -p 6006",
