@@ -6,6 +6,7 @@ import hooks from 'eslint-plugin-react-hooks';
 import a11y from 'eslint-plugin-jsx-a11y';
 import importPlugin from 'eslint-plugin-import';
 import prettier from 'eslint-config-prettier';
+import globals from 'globals';
 
 export default [
   js.configs.recommended,
@@ -113,7 +114,11 @@ export default [
   },
   {
     files: ['tools/**/*.js'],
-    languageOptions: { env: { node: true } },
+    languageOptions: {
+      globals: {
+        ...globals.node,
+      },
+    },
     rules: { 'no-console': 'off' },
   },
   ...storybook.configs['flat/recommended'],

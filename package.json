@@ -36,29 +36,22 @@
   },
   "scripts": {
     "prepare": "husky",
-    
     "format": "prettier --write .",
-    
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:fix": "pnpm lint:js:fix && pnpm lint:style:fix",
     "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:js:fix": "eslint --fix --cache",
     "lint:style": "stylelint '**/*.{css,scss}'",
     "lint:style:fix": "stylelint '**/*.{css,scss}' --fix --cache",
-    
     "typecheck": "tsc --noEmit",
-    
     "test": "pnpm test:unit && pnpm test:ui",
     "test:unit": "vitest run --config tools/test/vitest.config.unit.ts",
     "test:ui": "vitest run --config tools/test/vitest.config.ui.ts",
     "test:stories": "node tools/test/setup-playwright.js && vitest run --config tools/build/vite.config.stories.ts --project storybook",
-    
     "build:stories": "storybook build",
     "dev:stories": "storybook dev -p 6006",
-    
     "changeset:commit": "changeset",
     "changeset:log": "changeset status",
-
     "build:lib": "tsup",
     "prepublishOnly": "pnpm build:lib",
     "publish:lib": "pnpm build:lib && pnpm changeset publish"
@@ -100,6 +93,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.0",
     "eslint-plugin-storybook": "^9.1.12",
+    "globals": "^16.4.0",
     "husky": "^9.1.7",
     "jsdom": "^27.0.0",
     "lint-staged": "^16.2.5",
