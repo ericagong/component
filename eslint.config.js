@@ -14,7 +14,16 @@ export default [
   prettier,
   {
     // 전역 규칙
-    ignores: ['node_modules', 'dist', 'package-lock.json', 'pnpm-lock.yaml', 'package.json'],
+    ignores: [
+      'node_modules',
+      'dist',
+      'package-lock.json',
+      'pnpm-lock.yaml',
+      'package.json',
+      'storybook-static',
+      'coverage',
+      '**/vite.config.*',
+    ],
   },
   {
     // entry(파일 집합) 별 규칙
@@ -110,6 +119,7 @@ export default [
       '@typescript-eslint/consistent-type-imports': 'warn',
       '@typescript-eslint/no-non-null-assertion': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
   {
@@ -119,7 +129,10 @@ export default [
         ...globals.node,
       },
     },
-    rules: { 'no-console': 'off' },
+    rules: {
+      'no-console': 'off',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    },
   },
   ...storybook.configs['flat/recommended'],
 ];
