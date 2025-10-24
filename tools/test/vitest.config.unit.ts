@@ -1,5 +1,3 @@
-// node 환경에서 utils 테스트
-
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -12,11 +10,13 @@ export default defineConfig({
   test: {
     name: 'unit',
     globals: true,
-    environment: 'node', // 순수 로직
-    include: [path.join(root, 'src/utils/**/*.{test,spec}.{ts,tsx}')],
+    environment: 'node',
+    root,
+    include: ['src/utils/**/*.{test,spec}.{ts,tsx}'],
     coverage: {
       reporter: ['text', 'html'],
       reportsDirectory: path.join(root, 'coverage/unit'),
     },
+    passWithNoTests: true, // CI 초기 안정성용
   },
 });

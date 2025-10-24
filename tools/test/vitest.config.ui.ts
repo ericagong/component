@@ -14,11 +14,13 @@ export default defineConfig({
     name: 'ui',
     globals: true,
     environment: 'jsdom', // 가상 DOM 환경
-    setupFiles: [path.join(root, 'src/test/setup.ts')],
-    include: [path.join(root, 'src/{components,hooks}/**/*.{test,spec}.{ts,tsx}')],
+    root,
+    setupFiles: ['src/test/setup.ts'],
+    include: ['src/{components,hooks}/**/*.{test,spec}.{ts,tsx}'],
     coverage: {
       reporter: ['text', 'html'],
       reportsDirectory: path.join(root, 'coverage/ui'),
     },
+    passWithNoTests: true, // 초기 CI 안정성 확보
   },
 });
