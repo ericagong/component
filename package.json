@@ -1,5 +1,5 @@
 {
-  "name": "@erica/ui",
+  "name": "erica-ui",
   "version": "1.0.0",
   "description": "my ui component library",
   "keywords": [
@@ -31,8 +31,7 @@
   ],
   "private": false,
   "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
+    "access": "public"
   },
   "scripts": {
     "prepare": "husky",
