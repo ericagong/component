@@ -14,7 +14,7 @@ package-lock.json
 # ===============================
 *.tsbuildinfo
 dist/
-build/
+./build/
 out/
 
 # ===============================
@@ -55,9 +55,12 @@ coverage/
 *.scss.map
 .cache/
 .stylelintcache
+.eslintcache
 
 # ===============================
 # 🚀 Temporary files
 # ===============================
 temp/
 tmp/
+
+*storybook.log

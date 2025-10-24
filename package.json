@@ -2,27 +2,114 @@
   "name": "@erica/ui",
   "version": "1.0.0",
   "description": "my ui component library",
-  "type": "module",
-  "main": "index.js",
-  "scripts": {
-    "dev": "vite",
-    "build:lib": "tsup",
-    "build:app": "vite build"
-  },
-  "keywords": [],
+  "keywords": [
+    "erica",
+    "react",
+    "ui",
+    "component",
+    "components"
+  ],
   "author": "Erica Gong",
   "license": "MIT",
-  "packageManager": "pnpm@10.18.3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ericagong/component.git"
+  },
+  "homepage": "https://update-page-name.vercel.app",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "private": false,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "prepare": "husky",
+    "format": "prettier --write .",
+    "lint": "pnpm lint:js && pnpm lint:style",
+    "lint:fix": "pnpm lint:js:fix && pnpm lint:style:fix",
+    "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint:js:fix": "eslint --fix --cache",
+    "lint:style": "stylelint '**/*.{css,scss}'",
+    "lint:style:fix": "stylelint '**/*.{css,scss}' --fix --cache",
+    "typecheck": "tsc --noEmit",
+    "test": "pnpm test:unit && pnpm test:ui",
+    "test:unit": "vitest run --root . --config tools/test/vitest.config.unit.ts",
+    "test:ui": "vitest run --root . --config tools/test/vitest.config.ui.ts",
+    "test:stories": "node tools/test/setup-playwright.js && vitest run --root . --config tools/build/vite.config.stories.ts --project storybook",
+    "build:stories": "storybook build",
+    "dev:stories": "storybook dev -p 6006",
+    "changeset:commit": "changeset",
+    "changeset:log": "changeset status",
+    "build:lib": "tsup",
+    "prepublishOnly": "pnpm build:lib",
+    "publish:lib": "pnpm build:lib && pnpm changeset publish"
+  },
+  "engines": {
+    "node": ">=20 <25",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@10.19.0+sha512.c9fc7236e92adf5c8af42fd5bf1612df99c2ceb62f27047032f4720b33f8eacdde311865e91c411f2774f618d82f320808ecb51718bfa82c060c4ba7c76a32b8",
   "dependencies": {
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@chromatic-com/storybook": "^4.1.1",
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@eslint/js": "^9.37.0",
+    "@mdx-js/react": "^3.1.1",
+    "@storybook/addon-a11y": "^9.1.12",
+    "@storybook/addon-docs": "^9.1.12",
+    "@storybook/addon-vitest": "^9.1.12",
+    "@storybook/react-vite": "^9.1.12",
+    "@storybook/test": "^8.6.14",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/node": "^24.8.1",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@vitejs/plugin-react": "^5.0.4",
+    "@vitest/browser": "^3.2.4",
+    "@vitest/coverage-v8": "^3.2.4",
+    "eslint": "^9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.0",
+    "eslint-plugin-storybook": "^9.1.12",
+    "globals": "^16.4.0",
+    "husky": "^9.1.7",
+    "jsdom": "^27.0.0",
+    "lint-staged": "^16.2.5",
+    "markdown-to-jsx": "^7.7.16",
+    "playwright": "^1.56.1",
+    "prettier": "^3.6.2",
+    "sass-embedded": "^1.93.2",
+    "storybook": "^9.1.12",
+    "stylelint": "^16.25.0",
+    "stylelint-config-standard-scss": "^16.0.0",
+    "stylelint-order": "^7.0.0",
     "tsup": "^8.5.0",
+    "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "^5.9.3",
-    "vite": "^7.1.10"
+    "typescript-eslint": "^8.46.1",
+    "vite": "^7.1.10",
+    "vitest": "^3.2.4"
   }
 }

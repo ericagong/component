@@ -1,0 +1,12 @@
+# ====== Husky pre-commit Hook ======
+# 커밋 전: 변경 파일 대상 lint(eslint + stylelint) + format(prettier)
+
+
+echo "🙄 Running lint-staged..."
+
+pnpm lint-staged || {
+  echo "❌ Lint-staged failed. Commit aborted."
+  exit 1
+}
+
+echo "✅ lint-staged passed!"

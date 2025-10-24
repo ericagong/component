@@ -1,0 +1,116 @@
+# ------------------------------------------------------
+# 🚀 CD - Auto Version + Publish (Changeset + npm + GitHub Release)
+# ------------------------------------------------------
+# main 브랜치에 push될 때 자동 실행
+# 1️⃣ Changeset으로 버전 및 changelog 자동 반영
+# 2️⃣ GitHub Actions 봇이 커밋 및 태그 생성 후 push
+# 3️⃣ npm publish
+# 4️⃣ GitHub Release 자동 생성
+# ------------------------------------------------------
+
+name: 🚀 CD - Auto Version + Publish
+
+on:
+  push:
+    branches:
+      - main # main 브랜치에 변경이 병합되면 자동 실행
+
+permissions:
+  contents: write # GitHub Release 생성 및 태그 푸시 권한
+  packages: write # npm registry 접근 (배포용)
+  id-token: write # setup-node가 npm에 OIDC 인증 수행 (npm publish 인증)
+
+jobs:
+  release:
+    name: 🤖 Auto Bump + Tag + Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      # ------------------------------------------------------
+      # 1️⃣ 코드 체크아웃
+      # - 전체 git 이력을 가져와야 changeset version과 태그 푸시 가능
+      # ------------------------------------------------------
+      - name: 📂 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 전체 이력 필요 (changeset, 태그용)
+
+      # ------------------------------------------------------
+      # 2️⃣ PNPM 환경 설정
+      # - CD 환경에 pnpm 설치 (자동으로 package.json pnpm 버전 사용)
+      # ------------------------------------------------------
+      - name: 🛠️ Setup PNPM
+        uses: pnpm/action-setup@v4
+
+      # ------------------------------------------------------
+      # 3️⃣ Node.js 환경 설정
+      # - Node 20 + pnpm 캐시 + npm registry 인증 구성
+      # ------------------------------------------------------
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20 # .nvmrc에 명시된 Node 버전 (>=20)
+          registry-url: 'https://registry.npmjs.org/' # OIDC 인증용 npm registry
+          cache: 'pnpm' # 속도 향상
+
+      # ------------------------------------------------------
+      # 4️⃣ 의존성 설치
+      # - pnpm-lock.yaml 기준으로 설치 (버전 일관성 보장)
+      # ------------------------------------------------------
+      - name: 📦 Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      # ------------------------------------------------------
+      # 5️⃣ 라이브러리 빌드
+      # - tsup을 사용해 dist 폴더 생성
+      # ------------------------------------------------------
+      - name: 🏗️ Build Library
+        run: pnpm build:lib
+
+      # ------------------------------------------------------
+      # 6️⃣ Changeset 버전 반영 + Git 태그 자동 생성
+      # - Changeset이 릴리즈 노트 기반 package.json + CHANGELOG.md 수정
+      # - GitHub Actions 봇이 commit + tag + push
+      # ------------------------------------------------------
+      - name: 🪄 Version Bump + Tag Push
+        run: |
+          echo "🔧 Running changeset version bump..."
+          pnpm changeset version
+
+          echo "⚙️ Setting up GitHub Actions bot config..."
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          echo "💾 Committing version updates..."
+          git add .
+          git commit -m "chore(release): bump version [skip ci]" || echo "✅ No version changes to commit"
+
+          echo "🏷️ Creating tag..."
+          VERSION=$(node -p "require('./package.json').version")
+          git tag v$VERSION
+
+          echo "🚀 Pushing tags and commits..."
+          git push origin main --follow-tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ------------------------------------------------------
+      # 7️⃣ npm Publish
+      # - changeset이 prepublishOnly → build:lib → npm publish 실행
+      # ------------------------------------------------------
+      - name: 🚀 Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm changeset publish
+
+      # ------------------------------------------------------
+      # 8️⃣ GitHub Release 생성
+      # - softprops/action-gh-release를 이용해 자동 릴리스 페이지 생성
+      # - CHANGELOG.md 파일 첨부
+      # ------------------------------------------------------
+      - name: 🏷️ Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            CHANGELOG.md

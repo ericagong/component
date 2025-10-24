@@ -1,0 +1,59 @@
+# Build outputs
+node_modules
+dist
+build
+.next
+out
+coverage
+storybook-static
+
+
+# Configs 
+*.config.js
+*.config.cjs
+*.config.mjs
+*.config.ts
+*.d.ts
+*.json
+*.yml
+*.yaml
+
+# logs / data / assets
+*.md
+*.mdx
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.woff
+*.woff2
+*.ttf
+*.eot
+
+# Compiled types
+*.config.js
+*.config.cjs
+*.config.ts
+*.d.ts
+*.md
+
+# Global Styles or third-party styles
+styles/globals.scss
+styles/reset.scss
+styles/variables.scss
+styles/mixins.scss
+styles/fonts.scss
+**/vendor/**
+**/external/**
+**/*.min.css
+**/*.min.scss
+
+# test / storybook files
+src/**/*.stories.*
+src/**/*.test.*
+src/**/*.spec.*
+
+# Misc
+*.min.css
