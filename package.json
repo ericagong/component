@@ -36,25 +36,32 @@
   },
   "scripts": {
     "prepare": "husky",
-    "build:lib": "tsup",
-    "pack:lib": "pnpm build:lib && pnpm pack",
-    "changeset": "changeset",
-    "version:release": "pnpm changeset version",
-    "prepublishOnly": "pnpm build:lib",
-    "publish:release": "pnpm build:lib && pnpm changeset publish",
-    "dev:stories": "storybook dev -p 6006",
-    "build:stories": "storybook build",
-    "test": "pnpm test:unit && pnpm test:ui",
-    "test:unit": "vitest run --config tools/test/vitest.config.unit.ts",
-    "test:ui": "vitest run --config tools/test/vitest.config.ui.ts",
-    "test:stories": "node tools/test/setup-playwright.js && vitest run --config tools/build/vite.config.stories.ts --project storybook",
+    
+    "format": "prettier --write .",
+    
     "lint": "pnpm lint:js && pnpm lint:style",
     "lint:fix": "pnpm lint:js:fix && pnpm lint:style:fix",
     "lint:js": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:js:fix": "eslint --fix --cache",
     "lint:style": "stylelint '**/*.{css,scss}'",
     "lint:style:fix": "stylelint '**/*.{css,scss}' --fix --cache",
-    "format": "prettier --write ."
+    
+    "typecheck": "tsc --noEmit",
+    
+    "test": "pnpm test:unit && pnpm test:ui",
+    "test:unit": "vitest run --config tools/test/vitest.config.unit.ts",
+    "test:ui": "vitest run --config tools/test/vitest.config.ui.ts",
+    "test:stories": "node tools/test/setup-playwright.js && vitest run --config tools/build/vite.config.stories.ts --project storybook",
+    
+    "build:stories": "storybook build",
+    "dev:stories": "storybook dev -p 6006",
+    
+    "changeset:commit": "changeset",
+    "changeset:log": "changeset status",
+
+    "build:lib": "tsup",
+    "prepublishOnly": "pnpm build:lib",
+    "publish:lib": "pnpm build:lib && pnpm changeset publish"
   },
   "engines": {
     "node": ">=20 <25",

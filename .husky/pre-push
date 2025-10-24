@@ -1,6 +1,13 @@
 # ====== Husky pre-push Hook ======
-# push 전에 단위 테스트 + UI 테스트 실행
+# push 전 코드 품질 검사 3단계(타입체크, 테스트, 빌드)
 # 목적: 깨진 컴포넌트 로직이 main 브랜치에 합쳐지는 것 방지
+
+echo "🔍 Type checking..."
+
+pnpm typecheck || {
+  echo "❌ Type check failed. Push aborted."
+  exit 1
+}
 
 echo "🧪 Running test suites (unit + ui)..."
 
