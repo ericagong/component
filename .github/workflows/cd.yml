@@ -18,7 +18,6 @@ on:
 permissions:
   contents: write # GitHub Release 생성 및 태그 푸시 권한
   packages: write # npm registry 접근 (배포용)
-  id-token: write # setup-node가 npm에 OIDC 인증 수행 (npm publish 인증)
 
 jobs:
   release:
@@ -44,13 +43,13 @@ jobs:
 
       # ------------------------------------------------------
       # 3️⃣ Node.js 환경 설정
-      # - Node 20 + pnpm 캐시 + npm registry 인증 구성
+      # - Node 20 + pnpm 캐시 + npm registry 구성
       # ------------------------------------------------------
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20 # .nvmrc에 명시된 Node 버전 (>=20)
-          registry-url: 'https://registry.npmjs.org/' # OIDC 인증용 npm registry
+          registry-url: 'https://registry.npmjs.org/'
           cache: 'pnpm' # 속도 향상
 
       # ------------------------------------------------------
