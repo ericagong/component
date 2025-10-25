@@ -1,0 +1,50 @@
+$border-gray: #ccc;
+$open-tab: #bde;
+
+.root {
+  border: 1px solid $border-gray;
+}
+
+.list {
+  display: flex;
+  flex-wrap: nowrap;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid $border-gray;
+}
+
+.trigger {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 15px;
+  overflow: hidden;
+  font: inherit;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-left: 1px solid $border-gray;
+  text-overflow: ellipsis;
+
+  &:first-child {
+    border-left: none;
+  }
+
+  &.is-open {
+    background-color: $open-tab;
+  }
+}
+
+.content {
+  display: none;
+
+  &[hidden] {
+    display: block;
+  }
+
+  &.is-open {
+    display: block;
+    padding: 15px;
+  }
+}
