@@ -1,27 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { AccordionRoot, AccordionItem, AccordionTrigger, AccordionContent } from '.';
+import Accordion from './index';
 
-const meta: Meta<typeof AccordionRoot> = {
+const meta: Meta<typeof Accordion> = {
   title: 'Components/Accordion',
-  component: AccordionRoot,
+  component: Accordion,
 };
-
 export default meta;
 
-type Story = StoryObj<typeof AccordionRoot>;
+type Story = StoryObj<typeof Accordion>;
 
-export const Basic: Story = {
+export const Default: Story = {
   render: () => (
-    <AccordionRoot>
-      <AccordionItem value='item-1'>
-        <AccordionTrigger>What is React?</AccordionTrigger>
-        <AccordionContent>React is a JavaScript library for building user interfaces.</AccordionContent>
-      </AccordionItem>
-      <AccordionItem value='item-2'>
-        <AccordionTrigger>What is Headless UI?</AccordionTrigger>
-        <AccordionContent>Headless UI separates logic from presentation.</AccordionContent>
-      </AccordionItem>
-    </AccordionRoot>
+    <Accordion>
+      <Accordion.Item value='item-1'>
+        <Accordion.Trigger>What is cheese?</Accordion.Trigger>
+        <Accordion.Content>Cheese is a dairy product made from milk 🧀</Accordion.Content>
+      </Accordion.Item>
+      <Accordion.Item value='item-2'>
+        <Accordion.Trigger>Who is 은채?</Accordion.Trigger>
+        <Accordion.Content>은채는 Erica입니다 😎</Accordion.Content>
+      </Accordion.Item>
+    </Accordion>
   ),
 };
