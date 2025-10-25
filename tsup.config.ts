@@ -11,5 +11,8 @@ export default defineConfig({
   target: 'esnext',
   minify: false,
   splitting: false,
+  loader: {
+    '.scss': 'css',
+  },
   external: ['react', 'react-dom', 'react/jsx-runtime'], // react 중복 번들링 방지
 });
