@@ -53,7 +53,7 @@
     "changeset:log": "changeset status",
     "build:css": "sass src:dist --no-source-map --style=compressed",
     "build:js": "tsup",
-    "build:lib": "pnpm build:css && pnpm build:copy:scssjs",
+    "build:lib": "pnpm build:css && pnpm build:js",
     "prepublishOnly": "pnpm build:lib",
     "publish:lib": "pnpm build:lib && pnpm changeset publish"
   },
