@@ -14,12 +14,12 @@ export const Default: Story = {
   render: () => (
     <Accordion>
       <Accordion.Item value='item-1'>
-        <Accordion.Trigger>What is cheese?</Accordion.Trigger>
-        <Accordion.Content>Cheese is a dairy product made from milk 🧀</Accordion.Content>
+        <Accordion.Trigger>Faker, THE LEGEND</Accordion.Trigger>
+        <Accordion.Content>모든 길은 결국 다 저를 통합니다.</Accordion.Content>
       </Accordion.Item>
       <Accordion.Item value='item-2'>
-        <Accordion.Trigger>Who is 은채?</Accordion.Trigger>
-        <Accordion.Content>은채는 Erica입니다 😎</Accordion.Content>
+        <Accordion.Trigger>결국 중요한 것은?</Accordion.Trigger>
+        <Accordion.Content>끊임없는 노력과 자기발전</Accordion.Content>
       </Accordion.Item>
     </Accordion>
   ),

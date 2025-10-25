@@ -1,8 +1,8 @@
 import { createContext, useContext, useMemo } from 'react';
 import type { ReactNode } from 'react';
 
-import useAccordionState from './useAccordionState';
 import cx from './cx';
+import useAccordionState from './useAccordionState';
 
 type AccordionContextValue = {
   openItem: string | null;
@@ -15,7 +15,7 @@ type AccordionRootProps = {
 
 const AccordionContext = createContext<AccordionContextValue | null>(null);
 
-export const useAccordionContext = () => {
+const useAccordionContext = () => {
   const context = useContext(AccordionContext);
 
   if (!context) {
@@ -36,4 +36,5 @@ const AccordionRoot = ({ children }: AccordionRootProps) => {
   );
 };
 
+export { useAccordionContext };
 export default AccordionRoot;

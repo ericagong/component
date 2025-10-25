@@ -1,4 +1,4 @@
-import styles from './Accordion.module.scss';
+import styles from './accordion.module.scss';
 
 import { createCx } from '@/utils';
 

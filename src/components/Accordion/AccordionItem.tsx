@@ -18,7 +18,7 @@ export const useAccordionItemContext = () => {
   return context;
 };
 
-const AccordionItemComponent = ({ value, children }: AccordionItemProps) => {
+const AccordionItem = ({ value, children }: AccordionItemProps) => {
   const contextValue = useMemo(() => ({ value }), [value]);
 
   return (
@@ -28,7 +28,7 @@ const AccordionItemComponent = ({ value, children }: AccordionItemProps) => {
   );
 };
 
-const AccordionItem = memo(AccordionItemComponent);
-AccordionItem.displayName = 'AccordionItem';
+const MemoizedAccordionItem = memo(AccordionItem);
+MemoizedAccordionItem.displayName = 'AccordionItem';
 
-export default AccordionItem;
+export default MemoizedAccordionItem;
