@@ -15,5 +15,4 @@ export default defineConfig({
   loader: {
     '.scss': 'empty',
   },
-  onSuccess: 'pnpm copy:scss', // 빌드 성공 후 scss 파일 복사 스크립트 실행
 });
