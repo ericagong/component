@@ -11,8 +11,9 @@ export default defineConfig({
   target: 'esnext',
   minify: false,
   splitting: false,
-  loader: {
-    '.scss': 'css',
-  },
   external: ['react', 'react-dom', 'react/jsx-runtime'], // react 중복 번들링 방지
+  loader: {
+    '.scss': 'empty',
+  },
+  onSuccess: 'pnpm copy:scss', // 빌드 성공 후 scss 파일 복사 스크립트 실행
 });

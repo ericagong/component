@@ -120,6 +120,9 @@ importers:
       prettier:
         specifier: ^3.6.2
         version: 3.6.2
+      sass:
+        specifier: ^1.93.2
+        version: 1.93.2
       sass-embedded:
         specifier: ^1.93.2
         version: 1.93.2
@@ -7388,7 +7391,6 @@ snapshots:
       source-map-js: 1.2.1
     optionalDependencies:
       '@parcel/watcher': 2.5.1
-    optional: true
 
   saxes@6.0.0:
     dependencies:
