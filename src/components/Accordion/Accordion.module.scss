@@ -1,0 +1,60 @@
+$current-description: #eff;
+$border-gray: #ccc;
+$current-tab: #ace;
+$marker-default: '+ ';
+$marker-open: '- ';
+
+.root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid $border-gray;
+  border-bottom: 0;
+  list-style: none;
+}
+
+.item {
+  overflow: hidden;
+}
+
+.trigger {
+  width: 100%;
+  padding: 15px;
+  font: inherit;
+  line-height: 1.5;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  appearance: none;
+  border-bottom: 1px solid $border-gray;
+
+  &::before {
+    margin: 0 8px 0 -5px;
+    content: $marker-default;
+  }
+
+  &.is-open {
+    background-color: $current-tab;
+
+    &::before {
+      content: $marker-open;
+    }
+  }
+}
+
+.content {
+  max-height: 0;
+  padding: 0 15px;
+  overflow: hidden;
+  transition: max-height ease 0.3s;
+  border-bottom-width: 0;
+
+  &.is-open {
+    max-height: 400px; // 9999px (transition downside)
+    padding: 15px;
+    background-color: $current-description;
+    border-bottom: 1px solid $border-gray;
+  }
+}

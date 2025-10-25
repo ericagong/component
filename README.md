@@ -14,7 +14,7 @@ pnpm install
 - ui 테스트(jsdom + vitest + RTL)
 - e2e/스토리북 테스트(storybook + vite)
 
-# TODOS
+# Todo
 
 ## 목표: 빠른 MVP UI 완성 + 구조 통일
 
@@ -51,7 +51,7 @@ pnpm install
 
 1. Core Interaction (상태/토글)
 
-- Accordion
+- Accordion : max-height 버벅임 이슈 해결 필요
 - Tabs
 - Tooltip
 

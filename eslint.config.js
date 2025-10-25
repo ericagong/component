@@ -70,7 +70,7 @@ export default [
       // 일반 JS 규칙
       'no-console': 'warn',
       eqeqeq: 'error',
-      curly: 'error',
+      curly: ['error', 'multi-line'],
       'no-shadow': 'warn',
       'no-debugger': 'error',
       'prefer-const': 'error',
@@ -120,6 +120,12 @@ export default [
       '@typescript-eslint/no-non-null-assertion': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+    },
+  },
+  {
+    files: ['**/*.{jsx,tsx}'],
+    rules: {
+      'arrow-body-style': 'off',
     },
   },
   {
