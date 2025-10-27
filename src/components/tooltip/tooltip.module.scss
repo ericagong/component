@@ -1,0 +1,41 @@
+$border-gray: #ccc;
+$tooltip-bg-gray: #fff;
+$trigger-bg-gray: #ccc;
+
+.root {
+  display: inline-block;
+  padding: 0 5px;
+}
+
+.trigger {
+  background-color: $trigger-bg-gray;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.content {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  display: none;
+  padding: 10px;
+  background-color: $tooltip-bg-gray;
+  border: 1px solid $border-gray;
+  pointer-events: none;
+
+  &.is-open {
+    display: block;
+  }
+}
+
+.screen-reader-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+}
