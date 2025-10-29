@@ -1,7 +1,6 @@
 import { useLayoutEffect, useRef, useState, useCallback } from 'react';
 import type { CSSProperties } from 'react';
 
-import autoUpdate from './autoUpdate';
 import computeFloatingStyle from './computeFloatingStyle';
 import type { FloatingOptions, Rects } from './computeFloatingStyle';
 
@@ -46,35 +45,13 @@ const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
     });
   }, []);
 
-  const readyRef = useRef(false);
+  const setAnchor = useCallback(($el: HTMLElement | null) => {
+    anchorRef.current = $el;
+  }, []);
 
-  const tryInitialUpdate = useCallback(() => {
-    if (!anchorRef.current || !floatingRef.current) return;
-
-    if (readyRef.current) return;
-
-    // layout이 안정화되었을 때만 최초 실행
-    requestAnimationFrame(() => {
-      updatePosition();
-      readyRef.current = true;
-    });
-  }, [updatePosition]);
-
-  const setAnchor = useCallback(
-    ($el: HTMLElement | null) => {
-      anchorRef.current = $el;
-      tryInitialUpdate();
-    },
-    [tryInitialUpdate],
-  );
-
-  const setFloating = useCallback(
-    ($el: HTMLElement | null) => {
-      floatingRef.current = $el;
-      tryInitialUpdate();
-    },
-    [tryInitialUpdate],
-  );
+  const setFloating = useCallback(($el: HTMLElement | null) => {
+    floatingRef.current = $el;
+  }, []);
 
   useLayoutEffect(() => {
     const $anchor = anchorRef.current;
@@ -82,9 +59,19 @@ const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
 
     if (!$anchor || !$floating) return;
 
-    const cleanup = autoUpdate($anchor, $floating, updatePosition);
+    // $elem observe 등록 시, 최초 updatePosition 호출 보장
+    const resizeObserver = new ResizeObserver(updatePosition);
+    resizeObserver.observe($anchor);
+    resizeObserver.observe($floating);
 
-    return cleanup;
+    window.addEventListener('scroll', updatePosition, { passive: true });
+    window.addEventListener('resize', updatePosition);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener('scroll', updatePosition);
+      window.removeEventListener('resize', updatePosition);
+    };
   }, [updatePosition]);
 
   return { setAnchor, setFloating, styles, updatePosition };
