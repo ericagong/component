@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 import cx from './cx';
@@ -13,14 +12,10 @@ type TooltipContentProps = {
 const TooltipContent = ({ children, className }: TooltipContentProps) => {
   const { isOpen, floating } = useTooltipContext();
 
-  useEffect(() => {
-    if (isOpen) floating.update();
-  }, [isOpen]);
-
   if (!isOpen) return null;
 
   return createPortal(
-    <div className={cx('content', 'is-open', className)} ref={floating.refs.setFloating} style={floating.styles}>
+    <div className={cx('content', 'is-open', className)} ref={floating.setFloating} style={floating.styles}>
       {children}
     </div>,
     document.body,

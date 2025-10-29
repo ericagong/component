@@ -24,18 +24,27 @@ type FloatingOptions = {
 // 1. 기본 위치 계산
 // -----------------------------------------
 const calculatePosition = (anchorRect: DOMRect, floatingRect: DOMRect, placement: Placement) => {
-  const centerX = anchorRect.left + anchorRect.width / 2 - floatingRect.width / 2;
-  const centerY = anchorRect.top + anchorRect.height / 2 - floatingRect.height / 2;
-
   switch (placement) {
     case 'top':
-      return { x: centerX, y: anchorRect.top - floatingRect.height };
+      return {
+        x: anchorRect.left,
+        y: anchorRect.top - floatingRect.height,
+      };
     case 'bottom':
-      return { x: centerX, y: anchorRect.bottom };
+      return {
+        x: anchorRect.left,
+        y: anchorRect.bottom,
+      };
     case 'left':
-      return { x: anchorRect.left - floatingRect.width, y: centerY };
+      return {
+        x: anchorRect.left - floatingRect.width,
+        y: anchorRect.top,
+      };
     case 'right':
-      return { x: anchorRect.right, y: centerY };
+      return {
+        x: anchorRect.right,
+        y: anchorRect.top,
+      };
   }
 };
 

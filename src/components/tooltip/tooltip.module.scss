@@ -14,9 +14,6 @@ $trigger-bg-gray: #ccc;
 }
 
 .content {
-  position: fixed;
-  right: 0;
-  bottom: 0;
   z-index: 999;
   display: none;
   padding: 10px;
@@ -25,7 +22,7 @@ $trigger-bg-gray: #ccc;
   pointer-events: none;
 
   &.is-open {
-    display: block;
+    display: inline-block;
   }
 }
 

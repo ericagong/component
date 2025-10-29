@@ -1,99 +1,93 @@
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState, useCallback } from 'react';
 import type { CSSProperties } from 'react';
 
+import autoUpdate from './autoUpdate';
 import computeFloatingStyle from './computeFloatingStyle';
-import type { FloatingOptions, Rects, Placement } from './computeFloatingStyle';
+import type { FloatingOptions, Rects } from './computeFloatingStyle';
 
 type UseFloatingParams = Partial<FloatingOptions>;
+
 type UseFloatingReturn = {
-  refs: {
-    setAnchor: ($el: HTMLElement | null) => void;
-    setFloating: ($el: HTMLElement | null) => void;
-    anchor: HTMLElement | null;
-    floating: HTMLElement | null;
-  };
+  setAnchor: ($el: HTMLElement | null) => void;
+  setFloating: ($el: HTMLElement | null) => void;
   styles: CSSProperties;
-  update: () => void;
+  updatePosition: () => void;
 };
 
 const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
-  const { placement: initialPlacement = 'bottom', offset = 0, flip = true, clamp = true } = options;
+  const optionsRef = useRef({
+    placement: options.placement ?? 'bottom',
+    offset: options.offset ?? 0,
+    flip: options.flip ?? true,
+    clamp: options.clamp ?? true,
+  });
 
   const anchorRef = useRef<HTMLElement | null>(null);
   const floatingRef = useRef<HTMLElement | null>(null);
-
   const [styles, setStyles] = useState<CSSProperties>({});
 
-  // for debugging
-  const [placement, setPlacement] = useState<Placement>(initialPlacement);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const updatePosition = useCallback(() => {
+    const $anchor = anchorRef.current;
+    const $floating = floatingRef.current;
 
-  const computeStyle = useCallback(() => {
-    const anchor = anchorRef.current;
-    const floating = floatingRef.current;
-
-    if (!anchor || !floating) return null;
-    console.log(anchorRef.current, floatingRef.current);
+    if (!$anchor || !$floating) return;
 
     const rects: Rects = {
-      anchorRect: anchor.getBoundingClientRect(),
-      floatingRect: floating.getBoundingClientRect(),
+      anchorRect: $anchor.getBoundingClientRect(),
+      floatingRect: $floating.getBoundingClientRect(),
     };
 
-    const computed = computeFloatingStyle(rects, {
-      placement: initialPlacement,
-      offset,
-      flip,
-      clamp,
+    const computed = computeFloatingStyle(rects, optionsRef.current);
+
+    setStyles({
+      position: 'fixed',
+      top: `${computed.y}px`,
+      left: `${computed.x}px`,
     });
+  }, []);
 
-    return {
-      styles: {
-        position: 'fixed',
-        top: `${computed.y}px`,
-        left: `${computed.x}px`,
-      } as const,
-      // for debugging
-      placement: computed.placement,
-      position: { x: computed.x, y: computed.y },
-    };
-  }, [initialPlacement, offset, flip, clamp]);
+  const readyRef = useRef(false);
 
-  const applyStyle = useCallback(() => {
-    const computedStyle = computeStyle();
+  const tryInitialUpdate = useCallback(() => {
+    if (!anchorRef.current || !floatingRef.current) return;
 
-    if (!computedStyle) return;
+    if (readyRef.current) return;
 
-    setStyles(computedStyle.styles);
+    // layout이 안정화되었을 때만 최초 실행
+    requestAnimationFrame(() => {
+      updatePosition();
+      readyRef.current = true;
+    });
+  }, [updatePosition]);
 
-    // for debugging
-    setPlacement(computedStyle.placement);
-    setPosition(computedStyle.position);
-    console.log(placement, position);
-  }, [computeStyle]);
+  const setAnchor = useCallback(
+    ($el: HTMLElement | null) => {
+      anchorRef.current = $el;
+      tryInitialUpdate();
+    },
+    [tryInitialUpdate],
+  );
+
+  const setFloating = useCallback(
+    ($el: HTMLElement | null) => {
+      floatingRef.current = $el;
+      tryInitialUpdate();
+    },
+    [tryInitialUpdate],
+  );
 
   useLayoutEffect(() => {
-    applyStyle();
+    const $anchor = anchorRef.current;
+    const $floating = floatingRef.current;
 
-    window.addEventListener('resize', applyStyle);
-    window.addEventListener('scroll', applyStyle);
+    if (!$anchor || !$floating) return;
 
-    return () => {
-      window.removeEventListener('resize', applyStyle);
-      window.removeEventListener('scroll', applyStyle);
-    };
-  }, [applyStyle]);
+    const cleanup = autoUpdate($anchor, $floating, updatePosition);
 
-  return {
-    refs: {
-      setAnchor: ($el) => (anchorRef.current = $el),
-      setFloating: ($el) => (floatingRef.current = $el),
-      anchor: anchorRef.current,
-      floating: floatingRef.current,
-    },
-    styles,
-    update: applyStyle,
-  };
+    return cleanup;
+  }, [updatePosition]);
+
+  return { setAnchor, setFloating, styles, updatePosition };
 };
 
 export default useFloating;

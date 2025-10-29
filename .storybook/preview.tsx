@@ -44,6 +44,13 @@ const preview: Preview = {
       test: 'todo',
     },
   },
+  decorators: [
+    (Story) => (
+      <div style={{ padding: '50px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default preview;

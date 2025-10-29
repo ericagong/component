@@ -32,7 +32,7 @@ const TooltipRoot = ({ children, className }: TooltipRootProps) => {
 
   const floating = useFloating({
     placement: 'top',
-    offset: 8,
+    offset: 1,
     flip: true,
     clamp: true,
   });
@@ -47,7 +47,7 @@ const TooltipRoot = ({ children, className }: TooltipRootProps) => {
       close,
       floating,
     }),
-    [isOpen, floating],
+    [isOpen],
   );
 
   return (
