@@ -1,12 +1,15 @@
-import { useState, useMemo, createContext, useContext } from 'react';
-import type { ReactNode } from 'react';
+import { useState, useMemo, createContext, useContext, type ReactNode } from 'react';
 
 import cx from './cx';
+
+import useFloating from '@/hooks/useFloating/useFloating';
+import type { UseFloatingReturn } from '@/hooks/useFloating/useFloating';
 
 type TooltipContextValue = {
   isOpen: boolean;
   open: () => void;
   close: () => void;
+  floating: UseFloatingReturn;
 };
 
 type TooltipRootProps = {
@@ -16,7 +19,7 @@ type TooltipRootProps = {
 
 const TooltipContext = createContext<TooltipContextValue | null>(null);
 
-const useTooltipContext = () => {
+export const useTooltipContext = () => {
   const ctx = useContext(TooltipContext);
 
   if (!ctx) throw new Error('Tooltip components must be used within <TooltipRoot>');
@@ -27,10 +30,25 @@ const useTooltipContext = () => {
 const TooltipRoot = ({ children, className }: TooltipRootProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const floating = useFloating({
+    placement: 'top',
+    offset: 8,
+    flip: true,
+    clamp: true,
+  });
+
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
 
-  const contextValue = useMemo(() => ({ isOpen, open, close }), [isOpen]);
+  const contextValue = useMemo(
+    () => ({
+      isOpen,
+      open,
+      close,
+      floating,
+    }),
+    [isOpen, floating],
+  );
 
   return (
     <TooltipContext.Provider value={contextValue}>
@@ -39,5 +57,4 @@ const TooltipRoot = ({ children, className }: TooltipRootProps) => {
   );
 };
 
-export { useTooltipContext };
 export default TooltipRoot;
