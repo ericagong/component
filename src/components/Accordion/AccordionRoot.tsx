@@ -2,7 +2,8 @@ import { createContext, useContext, useMemo } from 'react';
 import type { ReactNode } from 'react';
 
 import cx from './cx';
-import useAccordionState from './useAccordionState';
+
+import useAccordionState from '@/hooks/useAccordionState';
 
 type AccordionContextValue = {
   openItem: string | null;
