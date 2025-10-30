@@ -51,7 +51,7 @@ pnpm install
 
 1. Core Interaction (상태/토글)
 
-- Accordion : max-height 버벅임 이슈 해결 필요
+- Accordion
 - Tabs
 - Tooltip
 
