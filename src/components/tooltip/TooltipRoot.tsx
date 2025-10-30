@@ -2,8 +2,8 @@ import { useState, useMemo, createContext, useContext, type ReactNode } from 're
 
 import cx from './cx';
 
-import useFloating from '@/hooks/useFloating/useFloating';
-import type { UseFloatingReturn } from '@/hooks/useFloating/useFloating';
+import useFloating from '@/hooks/useFloating';
+import type { UseFloatingReturn } from '@/hooks/useFloating';
 
 type TooltipContextValue = {
   isOpen: boolean;

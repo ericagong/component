@@ -5,13 +5,13 @@ type Rects = {
   floatingRect: DOMRect;
 };
 
-type ComputedStyle = {
+type ComputedPosition = {
   x: number;
   y: number;
   placement: Placement;
 };
 
-type Middleware = (rects: Rects, computed: ComputedStyle) => ComputedStyle;
+type Middleware = (rects: Rects, computed: ComputedPosition) => ComputedPosition;
 
 type FloatingOptions = {
   placement: Placement;
@@ -136,7 +136,7 @@ const clampMiddleware = (): Middleware => (rects, prev) => {
 // -----------------------------------------
 // 6. 전체 계산 파이프라인
 // -----------------------------------------
-const computeFloatingStyle = (rects: Rects, FloatingOptions: FloatingOptions): ComputedStyle => {
+const computePosition = (rects: Rects, FloatingOptions: FloatingOptions): ComputedPosition => {
   const { placement, offset, flip, clamp } = FloatingOptions;
 
   const middlewares: Middleware[] = [
@@ -149,5 +149,5 @@ const computeFloatingStyle = (rects: Rects, FloatingOptions: FloatingOptions): C
   return middlewares.reduce((computed, middleware) => middleware(rects, computed), { x: 0, y: 0, placement });
 };
 
-export default computeFloatingStyle;
-export type { Placement, Rects, FloatingOptions, ComputedStyle };
+export default computePosition;
+export type { Placement, Rects, FloatingOptions, ComputedPosition };

@@ -1,8 +1,8 @@
 import { useLayoutEffect, useRef, useState, useCallback } from 'react';
 import type { CSSProperties } from 'react';
 
-import computeFloatingStyle from './computeFloatingStyle';
-import type { FloatingOptions, Rects } from './computeFloatingStyle';
+import computePosition from '@/utils/computePosition';
+import type { FloatingOptions, Rects } from '@/utils/computePosition';
 
 type UseFloatingParams = Partial<FloatingOptions>;
 
@@ -36,7 +36,7 @@ const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
       floatingRect: $floating.getBoundingClientRect(),
     };
 
-    const computed = computeFloatingStyle(rects, optionsRef.current);
+    const computed = computePosition(rects, optionsRef.current);
 
     setStyles({
       position: 'fixed',
