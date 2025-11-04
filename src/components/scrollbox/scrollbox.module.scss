@@ -1,0 +1,100 @@
+$dimmed-black: rgb(0 0 0 / 50%);
+$white: #fff;
+
+.scrollbox {
+  position: relative;
+}
+
+.list {
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 0;
+  padding: 0;
+  overflow-y: hidden;
+  list-style: none;
+}
+
+.sentinel {
+  flex: 0 0 1px;
+  margin-right: -1px;
+}
+
+.item {
+  flex: 0 0 auto;
+}
+
+.scroll-button {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: none;
+  width: 40px;
+  background-color: $dimmed-black;
+  border: 0;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &.on {
+    display: block;
+    opacity: 0.5;
+    transition: opacity ease-out 0.2s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  // 버튼 위치
+  &::before,
+  &::after {
+    position: absolute;
+    width: 4px;
+    height: 12px;
+    background-color: $white;
+    content: '';
+  }
+
+  &::before {
+    top: calc(50% - 10px);
+  }
+
+  &::after {
+    top: calc(50% + 2px);
+  }
+
+  // <- 좌측 버튼
+  &.prev {
+    left: 0;
+
+    &::before {
+      left: 13px;
+      rotate: 30deg;
+      transform-origin: 0 100%;
+    }
+
+    &::after {
+      left: 13px;
+      rotate: -30deg;
+      transform-origin: 0 0;
+    }
+  }
+
+  // -> 우측 버튼
+  &.next {
+    right: 0;
+
+    &::before {
+      top: calc(50% - 10px);
+      right: 13px;
+      rotate: -30deg;
+      transform-origin: 100% 100%;
+    }
+
+    &::after {
+      top: calc(50% + 2px);
+      right: 13px;
+      rotate: 30deg;
+      transform-origin: 100% 0;
+    }
+  }
+}

@@ -11,8 +11,8 @@ type UseScrollNavigatorOptions = {
 };
 
 type UseScrollNavigatorParams = {
-  listRef: RefObject<HTMLUListElement>;
-  itemsRef: RefObject<(HTMLLIElement | null)[]>;
+  listRef: RefObject<HTMLUListElement | null>;
+  itemRefs: RefObject<(HTMLLIElement | null)[]>;
   options?: UseScrollNavigatorOptions;
 };
 
@@ -22,14 +22,14 @@ type UseScrollNavigatorReturn = {
 
 const useScrollNavigator = ({
   listRef,
-  itemsRef,
+  itemRefs,
   options = {},
 }: UseScrollNavigatorParams): UseScrollNavigatorReturn => {
   const { behavior = 'smooth', block = 'nearest', visibilityMode = 'partial' } = options;
 
   const getVisibleItemsOnEdge = () => {
     const $list = listRef.current;
-    const $items = itemsRef.current;
+    const $items = itemRefs.current;
 
     if (!$list || !$items?.length) return {};
 

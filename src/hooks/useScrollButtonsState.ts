@@ -7,45 +7,46 @@ type ButtonDirection = 'prev' | 'next';
 type ButtonsEnabled = { prev: boolean; next: boolean };
 
 type UseScrollButtonStateParams = {
-  targetRefs: RefObject<(HTMLElement | null)[]>;
+  sentinelRefs: RefObject<(HTMLElement | null)[]>;
 };
 
 type UseScrollButtonStateReturn = {
-  prevEnabled: boolean;
-  nextEnabled: boolean;
+  prevButtonEnabled: boolean;
+  nextButtonEnabled: boolean;
 };
 
-const useScrollButtonState = ({ targetRefs }: UseScrollButtonStateParams): UseScrollButtonStateReturn => {
-  const { visibleEntries } = useMultiVisibilityObserver(targetRefs);
+const useScrollButtonsState = ({ sentinelRefs }: UseScrollButtonStateParams): UseScrollButtonStateReturn => {
+  const { visibleEntries: visibleSentinels } = useMultiVisibilityObserver(sentinelRefs);
 
   const [buttonsEnabled, setButtonsEnabled] = useState<ButtonsEnabled>({
-    prev: false,
+    prev: false, // 처음에는 왼쪽 끝이니까 비활성화
     next: true,
   });
 
   useEffect(() => {
-    if (!visibleEntries.length) {
-      setButtonsEnabled({ prev: false, next: true });
+    // sentinel이 아무것도 감지되지 않으면 둘 다 활성화 (스크롤 중간일 수도 있음)
+    if (!visibleSentinels.length) {
+      setButtonsEnabled({ prev: true, next: true });
 
       return;
     }
 
-    setButtonsEnabled((prev) => {
-      const next = { ...prev };
-      visibleEntries.forEach((entry) => {
-        const direction = (entry.target as HTMLElement).dataset.direction as ButtonDirection;
+    // sentinel이 감지된 방향만 false로, 나머지는 true로
+    const nextState: ButtonsEnabled = { prev: true, next: true };
 
-        if (direction === 'prev' || direction === 'next') {
-          next[direction] = false;
-        }
-      });
+    visibleSentinels.forEach((entry) => {
+      const direction = (entry.target as HTMLElement).dataset.direction as ButtonDirection;
 
-      return next;
+      if (direction === 'prev' || direction === 'next') {
+        nextState[direction] = false;
+      }
     });
-  }, [visibleEntries]);
 
-  return { prevEnabled: buttonsEnabled.prev, nextEnabled: buttonsEnabled.next };
+    setButtonsEnabled(nextState);
+  }, [visibleSentinels]);
+
+  return { prevButtonEnabled: buttonsEnabled.prev, nextButtonEnabled: buttonsEnabled.next };
 };
 
-export default useScrollButtonState;
+export default useScrollButtonsState;
 export type { ButtonDirection };
