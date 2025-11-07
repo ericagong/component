@@ -2,12 +2,13 @@ import type { RefObject } from 'react';
 
 import type { ButtonDirection } from './useScrollButtonsState';
 
+// 아이템 가시성 판단 전략
 type VisibilityMode = 'partial' | 'full';
 
 type UseScrollNavigatorOptions = {
-  behavior?: ScrollBehavior; // 'smooth' | 'auto'
-  block?: ScrollLogicalPosition; // 'start' | 'center' | 'end' | 'nearest'
-  visibilityMode?: VisibilityMode; // 아이템 가시성 판단 방식
+  behavior?: ScrollBehavior;
+  block?: ScrollLogicalPosition;
+  visibilityMode?: VisibilityMode;
 };
 
 type UseScrollNavigatorParams = {
@@ -40,13 +41,13 @@ const useScrollNavigator = ({
 
       const { left: itemLeft, right: itemRight } = $item.getBoundingClientRect();
 
-      if (visibilityMode === 'full') {
-        // 아이템 전체가 리스트 뷰포트 안에 들어온 경우만 인정
-        return listLeft <= itemLeft && itemRight <= listRight;
+      // partial(default): 아이템이 부분적으로라도 보이면 true
+      if (visibilityMode === 'partial') {
+        return itemLeft <= listRight && itemRight >= listLeft;
       }
 
-      // (기본: visibilityMode === 'partial') 부분적으로라도 보이면 true
-      return itemLeft <= listRight && itemRight >= listLeft;
+      // full: 아이템이 전체적으로 list 내에 들어온 경우 true
+      return listLeft <= itemLeft && itemRight <= listRight;
     };
 
     const leftItemIndex = Math.max($items.findIndex(isVisible), 0);

@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 
-import useVisibilityTrigger from './useVisibilityTrigger';
+import useElementVisibility from '../atomic/observer/useElementVisibility';
 
 type UseLazyLoadOptions = {
-  once?: boolean;
   threshold?: number | number[];
   root?: Element | null;
   rootMargin?: string;
 };
 
 const useLazyLoad = <T extends HTMLElement = HTMLElement>(options: UseLazyLoadOptions = {}) => {
-  const { targetRef, isVisible } = useVisibilityTrigger<T>(options);
+  const { targetRef, isVisible } = useElementVisibility<T>({
+    once: true,
+    ...options,
+  });
 
   const [shouldLoad, setShouldLoad] = useState(false);
 

@@ -1,11 +1,9 @@
 import { createContext, useMemo, useRef, useContext } from 'react';
 import type { PropsWithChildren, RefObject } from 'react';
 
-import cx from './cx';
-
-import useScrollNavigator from '@/hooks/useScrollNavigator';
-import useScrollButtonsState from '@/hooks/useScrollButtonsState';
-import type { ButtonDirection } from '@/hooks/useScrollButtonsState';
+import useScrollNavigator from '@/hooks/features/useScrollNavigator';
+import useScrollButtonsState from '@/hooks/features/useScrollButtonsState';
+import type { ButtonDirection } from '@/hooks/features/useScrollButtonsState';
 
 type ScrollBoxContextValue = {
   listRef: RefObject<HTMLUListElement | null>;

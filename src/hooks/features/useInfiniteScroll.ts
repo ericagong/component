@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import type { RefObject } from 'react';
 
-import useVisibilityTrigger from './useVisibilityTrigger';
+import useElementVisibility from '../atomic/observer/useElementVisibility';
 
 type UseInfiniteScrollOptions = {
   once?: boolean;
@@ -22,7 +22,7 @@ const useInfiniteScroll = <T extends HTMLElement = HTMLElement>(
 ): UseInfiniteScrollReturn<T> => {
   const { fetchNext, hasMore = true, ...observerOptions } = options;
 
-  const { targetRef: sentinelRef, isVisible: sentinelIsVisible } = useVisibilityTrigger<T>({
+  const { targetRef: sentinelRef, isVisible: sentinelIsVisible } = useElementVisibility<T>({
     ...observerOptions,
     once: false,
   });
@@ -35,18 +35,18 @@ const useInfiniteScroll = <T extends HTMLElement = HTMLElement>(
     if (fetchingLockRef.current || !hasMore) return;
 
     fetchingLockRef.current = true;
+
     setIsLoading(true);
 
     await Promise.resolve(fetchNext());
 
     fetchingLockRef.current = false;
+
     setIsLoading(false);
   }, [fetchNext, hasMore]);
 
   useEffect(() => {
-    if (sentinelIsVisible && hasMore) {
-      loadMore();
-    }
+    if (sentinelIsVisible && hasMore) loadMore();
   }, [sentinelIsVisible, hasMore, loadMore]);
 
   return { sentinelRef, isLoading };
