@@ -9,10 +9,10 @@ type TooltipContentProps = {
 };
 
 const TooltipContent = ({ children, className }: TooltipContentProps) => {
-  const { isOpen, floating } = useTooltipContext();
+  const { isOpen, setFloating, style } = useTooltipContext();
 
   return createPortal(
-    <div className={cx('content', { 'is-open': isOpen }, className)} ref={floating.setFloating} style={floating.styles}>
+    <div className={cx('content', { 'is-open': isOpen }, className)} ref={setFloating} style={style}>
       {children}
     </div>,
     document.body,

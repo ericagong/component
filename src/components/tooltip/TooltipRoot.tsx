@@ -1,15 +1,18 @@
-import { useState, useMemo, createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, useMemo } from 'react';
+import type { ReactNode, CSSProperties } from 'react';
 
 import cx from './cx';
 
+import useDisclosure from '@/hooks/atomic/useDisclosure';
 import useFloating from '@/hooks/useFloating';
-import type { UseFloatingReturn } from '@/hooks/useFloating';
 
 type TooltipContextValue = {
   isOpen: boolean;
   open: () => void;
   close: () => void;
-  floating: UseFloatingReturn;
+  setAnchor: (node: HTMLElement | null) => void;
+  setFloating: (node: HTMLElement | null) => void;
+  style: CSSProperties;
 };
 
 type TooltipRootProps = {
@@ -22,32 +25,33 @@ const TooltipContext = createContext<TooltipContextValue | null>(null);
 export const useTooltipContext = () => {
   const ctx = useContext(TooltipContext);
 
-  if (!ctx) throw new Error('Tooltip components must be used within <TooltipRoot>');
+  if (!ctx) {
+    throw new Error('Tooltip compound components must be used within <TooltipRoot>');
+  }
 
   return ctx;
 };
 
 const TooltipRoot = ({ children, className }: TooltipRootProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, open, close } = useDisclosure(false);
 
-  const floating = useFloating({
+  const { setAnchor, setFloating, style } = useFloating({
     placement: 'top',
     offset: 1,
     flip: true,
     clamp: true,
   });
 
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
-
   const contextValue = useMemo(
     () => ({
       isOpen,
       open,
       close,
-      floating,
+      setAnchor,
+      setFloating,
+      style,
     }),
-    [isOpen],
+    [isOpen, open, close, setAnchor, setFloating, style],
   );
 
   return (

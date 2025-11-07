@@ -9,16 +9,10 @@ type TooltipTriggerProps = {
 };
 
 const TooltipTrigger = ({ children, className }: TooltipTriggerProps) => {
-  const { open, close, floating } = useTooltipContext();
+  const { open, close, setAnchor } = useTooltipContext();
 
   return (
-    <button
-      type='button'
-      className={cx('trigger', className)}
-      ref={floating.setAnchor}
-      onMouseEnter={open}
-      onMouseLeave={close}
-    >
+    <button type='button' className={cx('trigger', className)} ref={setAnchor} onMouseEnter={open} onMouseLeave={close}>
       {children}
     </button>
   );

@@ -7,10 +7,9 @@ import type { FloatingOptions, Rects } from '@/utils/computePosition';
 type UseFloatingParams = Partial<FloatingOptions>;
 
 type UseFloatingReturn = {
-  setAnchor: ($el: HTMLElement | null) => void;
-  setFloating: ($el: HTMLElement | null) => void;
-  styles: CSSProperties;
-  updatePosition: () => void;
+  setAnchor: ($target: HTMLElement | null) => void;
+  setFloating: ($target: HTMLElement | null) => void;
+  style: CSSProperties;
 };
 
 const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
@@ -23,7 +22,16 @@ const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
 
   const anchorRef = useRef<HTMLElement | null>(null);
   const floatingRef = useRef<HTMLElement | null>(null);
-  const [styles, setStyles] = useState<CSSProperties>({});
+
+  const [style, setStyle] = useState<CSSProperties>({});
+
+  const setAnchor = useCallback(($target: HTMLElement | null) => {
+    anchorRef.current = $target;
+  }, []);
+
+  const setFloating = useCallback(($target: HTMLElement | null) => {
+    floatingRef.current = $target;
+  }, []);
 
   const updatePosition = useCallback(() => {
     const $anchor = anchorRef.current;
@@ -37,21 +45,23 @@ const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
     };
 
     const computed = computePosition(rects, optionsRef.current);
-
-    setStyles({
+    setStyle({
       position: 'fixed',
       top: `${computed.y}px`,
       left: `${computed.x}px`,
     });
   }, []);
 
-  const setAnchor = useCallback(($el: HTMLElement | null) => {
-    anchorRef.current = $el;
-  }, []);
+  useLayoutEffect(() => {
+    optionsRef.current = {
+      placement: options.placement ?? 'bottom',
+      offset: options.offset ?? 0,
+      flip: options.flip ?? true,
+      clamp: options.clamp ?? true,
+    };
 
-  const setFloating = useCallback(($el: HTMLElement | null) => {
-    floatingRef.current = $el;
-  }, []);
+    updatePosition();
+  }, [options.placement, options.offset, options.flip, options.clamp, updatePosition]);
 
   useLayoutEffect(() => {
     const $anchor = anchorRef.current;
@@ -59,7 +69,8 @@ const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
 
     if (!$anchor || !$floating) return;
 
-    // $elem observe 등록 시, 최초 updatePosition 호출 보장
+    updatePosition();
+
     const resizeObserver = new ResizeObserver(updatePosition);
     resizeObserver.observe($anchor);
     resizeObserver.observe($floating);
@@ -74,8 +85,7 @@ const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
     };
   }, [updatePosition]);
 
-  return { setAnchor, setFloating, styles, updatePosition };
+  return { setAnchor, setFloating, style };
 };
 
 export default useFloating;
-export type { UseFloatingParams, UseFloatingReturn };
