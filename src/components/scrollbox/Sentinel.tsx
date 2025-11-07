@@ -1,7 +1,7 @@
 import { useScrollBoxContext } from './ScrollBoxRoot';
 import cx from './cx';
 
-import type { ButtonDirection } from '@/hooks/useScrollButtonsState';
+import type { ButtonDirection } from '@/hooks/features/useScrollButtonsState';
 
 type SentinelProps = { direction: ButtonDirection };
 

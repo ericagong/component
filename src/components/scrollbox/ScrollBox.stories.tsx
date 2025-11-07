@@ -4,7 +4,6 @@ import data from './data';
 
 import ScrollBox from './index';
 
-
 const WIDTH = 200;
 const HEIGHT = 400;
 
