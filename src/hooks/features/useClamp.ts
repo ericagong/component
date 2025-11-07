@@ -1,6 +1,23 @@
 import { useEffect, useState } from 'react';
 import type { RefObject } from 'react';
 
+const applyClampStyle = ($target: HTMLElement, maxLines: number) => {
+  Object.assign($target.style, {
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: `${maxLines}`,
+    overflow: 'hidden',
+  });
+};
+
+const resetClampStyle = ($target: HTMLElement) => {
+  Object.assign($target.style, {
+    display: 'block',
+    WebkitLineClamp: 'unset',
+    overflow: 'visible',
+  });
+};
+
 type UseClampParams = {
   targetRef: RefObject<HTMLElement | null>;
   lineCount: number;
@@ -26,18 +43,9 @@ const useClamp = ({ targetRef, lineCount, maxLines }: UseClampParams): UseClampR
     setIsClamped(shouldClamp);
 
     if (shouldClamp && !isExpanded) {
-      Object.assign($target.style, {
-        display: '-webkit-box',
-        WebkitBoxOrient: 'vertical',
-        WebkitLineClamp: `${maxLines}`,
-        overflow: 'hidden',
-      });
+      applyClampStyle($target, maxLines);
     } else {
-      Object.assign($target.style, {
-        display: 'block',
-        WebkitLineClamp: 'unset',
-        overflow: 'visible',
-      });
+      resetClampStyle($target);
     }
   }, [targetRef, lineCount, maxLines, isExpanded]);
 

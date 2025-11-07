@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 
-import useClone from './atomic/useClone';
+import useClone from '../atomic/useClone';
 
 import clamp from '@/utils/clamp';
 
@@ -20,21 +20,29 @@ const useAutoRows = ({ min = 3, max = 5 }: UseAutoRowsParams = {}) => {
 
     const updateRows = () => {
       $clone.value = $target.value || ' ';
-      const lineHeight = parseFloat(window.getComputedStyle($clone).lineHeight);
 
-      if (!lineHeight) return;
+      const style = window.getComputedStyle($target);
 
-      const totalLines = Math.round($clone.scrollHeight / lineHeight);
+      const safeLineHeight =
+        style.lineHeight === 'normal' ? parseFloat(style.fontSize) * 1.2 : parseFloat(style.lineHeight); // browser fallback
+
+      if (!safeLineHeight) return;
+
+      const totalLines = Math.round($clone.scrollHeight / safeLineHeight);
+
       const clamped = clamp(totalLines, min, max);
 
-      $target.style.height = `${clamped * lineHeight}px`;
+      $target.style.height = `${clamped * safeLineHeight}px`;
     };
 
     updateRows();
+
     $target.addEventListener('input', updateRows);
 
-    return () => $target.removeEventListener('input', updateRows);
-  }, [min, max]);
+    return () => {
+      $target.removeEventListener('input', updateRows);
+    };
+  }, [min, max, targetRef, cloneRef]);
 
   return { targetRef, cloneRef };
 };

@@ -1,11 +1,9 @@
 import { createContext, useContext, useMemo } from 'react';
 import type { ReactNode } from 'react';
 
-import useAutoRows from '@/hooks/useAutoRows';
+import useAutoRows from '@/hooks/features/useAutoRows';
 
 type TextBoxContextValue = ReturnType<typeof useAutoRows>;
-
-const TextBoxContext = createContext<TextBoxContextValue | null>(null);
 
 type TextBoxRootProps = {
   minRows?: number;
@@ -13,13 +11,7 @@ type TextBoxRootProps = {
   children: ReactNode;
 };
 
-const TextBoxRoot = ({ minRows = 3, maxRows = 15, children }: TextBoxRootProps) => {
-  const autoRows = useAutoRows({ min: minRows, max: maxRows });
-
-  const contextValue = useMemo(() => autoRows, [autoRows]);
-
-  return <TextBoxContext.Provider value={contextValue}>{children}</TextBoxContext.Provider>;
-};
+const TextBoxContext = createContext<TextBoxContextValue | null>(null);
 
 const useTextBoxContext = () => {
   const context = useContext(TextBoxContext);
@@ -29,5 +21,12 @@ const useTextBoxContext = () => {
   return context;
 };
 
-export default TextBoxRoot;
+const TextBoxRoot = ({ minRows = 3, maxRows = 5, children }: TextBoxRootProps) => {
+  const autoRows = useAutoRows({ min: minRows, max: maxRows });
+  const value = useMemo(() => autoRows, [autoRows]);
+
+  return <TextBoxContext.Provider value={value}>{children}</TextBoxContext.Provider>;
+};
+
 export { useTextBoxContext };
+export default TextBoxRoot;
