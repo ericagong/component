@@ -8,7 +8,7 @@ type AccordionItemProps = { value: string; children: ReactNode };
 
 const AccordionItemContext = createContext<AccordionItemContextValue | null>(null);
 
-export const useAccordionItemContext = () => {
+const useAccordionItemContext = () => {
   const context = useContext(AccordionItemContext);
 
   if (!context) {
@@ -31,4 +31,5 @@ const AccordionItem = ({ value, children }: AccordionItemProps) => {
 const MemoizedAccordionItem = memo(AccordionItem);
 MemoizedAccordionItem.displayName = 'AccordionItem';
 
+export { useAccordionItemContext };
 export default MemoizedAccordionItem;

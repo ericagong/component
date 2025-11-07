@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { RefObject } from 'react';
 
-import useElementsVisibility from '@/hooks/atomic/observer/useElementsVisibility';
+import useElementsVisibility from '@/hooks/atomic/useElementsVisibility';
 
 type ScrollDirection = 'left' | 'right';
 type ScrollEdgesState = { left: boolean; right: boolean };

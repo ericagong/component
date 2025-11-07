@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react';
 
-type UseAccordionStateArgs = {
+type UseAccordionReturns = {
   openItem: string | null;
   toggleItem: (value: string) => void;
 };
 
-const useAccordionState = (): UseAccordionStateArgs => {
+const useAccordion = (): UseAccordionReturns => {
   const [openItem, setOpenItem] = useState<string | null>(null);
 
   const toggleItem = useCallback((value: string) => {
@@ -15,4 +15,4 @@ const useAccordionState = (): UseAccordionStateArgs => {
   return { openItem, toggleItem };
 };
 
-export default useAccordionState;
+export default useAccordion;

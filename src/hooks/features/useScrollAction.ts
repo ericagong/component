@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import type { RefObject } from 'react';
 
-import useVisibleRange from '@/hooks/atomic/measure/useVisibleRange';
+import useVisibleRange from '@/hooks/atomic/useVisibleRange';
 
 type ButtonDirection = 'prev' | 'next';
 

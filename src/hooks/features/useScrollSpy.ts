@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback } from 'react';
 import type { RefObject } from 'react';
 
-import useElementsVisibility from '@/hooks/atomic/observer/useElementsVisibility';
+import useElementsVisibility from '@/hooks/atomic/useElementsVisibility';
 
 type UseScrollSpyOptions = {
   root?: Element | null;

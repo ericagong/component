@@ -3,11 +3,11 @@ import type { ReactNode } from 'react';
 
 import cx from './cx';
 
-import useAccordionState from '@/hooks/useAccordionState';
+import useSingleSelect from '@/hooks/atomic/useSingleSelect';
 
 type AccordionContextValue = {
   openItem: string | null;
-  toggleItem: (value: string) => void;
+  toggle: (value: string) => void;
 };
 
 type AccordionRootProps = {
@@ -27,8 +27,15 @@ const useAccordionContext = () => {
 };
 
 const AccordionRoot = ({ children }: AccordionRootProps) => {
-  const { openItem, toggleItem } = useAccordionState();
-  const contextValue = useMemo(() => ({ openItem, toggleItem }), [openItem, toggleItem]);
+  const { selected: openItem, toggle } = useSingleSelect<string>(null);
+
+  const contextValue = useMemo(
+    () => ({
+      openItem,
+      toggle,
+    }),
+    [openItem, toggle],
+  );
 
   return (
     <AccordionContext.Provider value={contextValue}>

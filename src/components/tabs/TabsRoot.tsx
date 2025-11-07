@@ -3,9 +3,11 @@ import type { ReactNode } from 'react';
 
 import cx from './cx';
 
+import useExclusiveSelect from '@/hooks/atomic/useExclusiveSelect';
+
 type TabsContextValue = {
   activeTab: string;
-  setActiveTab: (value: string) => void;
+  open: (value: string) => void;
 };
 
 type TabsRootProps = {
@@ -25,9 +27,9 @@ const useTabsContext = () => {
 };
 
 const TabsRoot = ({ defaultValue, children, className }: TabsRootProps) => {
-  const [activeTab, setActiveTab] = useState(defaultValue);
+  const { selected: activeTab, select: open } = useExclusiveSelect(defaultValue);
 
-  const contextValue = useMemo(() => ({ activeTab, setActiveTab }), [activeTab]);
+  const contextValue = useMemo(() => ({ activeTab, open }), [activeTab, open]);
 
   return (
     <TabsContext.Provider value={contextValue}>

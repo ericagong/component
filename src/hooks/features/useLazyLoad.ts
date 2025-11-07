@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import useElementVisibility from '../atomic/observer/useElementVisibility';
+import useElementVisibility from '../atomic/useElementVisibility';
 
 type UseLazyLoadOptions = {
   threshold?: number | number[];

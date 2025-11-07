@@ -11,12 +11,12 @@ type TabsTriggerProps = {
 };
 
 const TabsTrigger = ({ value, children, className }: TabsTriggerProps) => {
-  const { activeTab, setActiveTab } = useTabsContext();
+  const { activeTab, open } = useTabsContext();
   const isOpen = activeTab === value;
 
   const handleClick = useCallback(() => {
-    setActiveTab(value);
-  }, [setActiveTab, value]);
+    open(value);
+  }, [open, value]);
 
   return (
     <button type='button' className={cx('trigger', { 'is-open': isOpen }, className)} onClick={handleClick}>

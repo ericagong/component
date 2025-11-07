@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import type { RefObject } from 'react';
 
-import useElementVisibility from '../atomic/observer/useElementVisibility';
+import useElementVisibility from '../atomic/useElementVisibility';
 
 type UseInfiniteScrollOptions = {
   once?: boolean;

@@ -11,6 +11,7 @@ type TabsContentProps = {
 
 const TabsContent = ({ value, children, className }: TabsContentProps) => {
   const { activeTab } = useTabsContext();
+
   const isOpen = activeTab === value;
 
   if (!isOpen) return null;
