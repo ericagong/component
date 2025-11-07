@@ -15,13 +15,7 @@ $button-black: #333;
   white-space: pre-line;
 }
 
-.clone {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.show-more-button {
+.expand-button {
   position: absolute;
   right: 0.625rem;
   bottom: 0.625rem;
@@ -47,7 +41,7 @@ $button-black: #333;
   }
 }
 
-.root[data-state='clamped'] {
+.root[data-state='is-clamped'] {
   .text {
     display: -webkit-box;
     overflow: hidden;

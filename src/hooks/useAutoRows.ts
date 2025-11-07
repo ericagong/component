@@ -1,6 +1,6 @@
 import { useLayoutEffect } from 'react';
 
-import useClone from './useClone';
+import useClone from './atomic/useClone';
 
 import clamp from '@/utils/clamp';
 

@@ -1,34 +1,59 @@
-import type { ReactNode } from 'react';
 import { createContext, useContext, useMemo } from 'react';
+import type { ReactNode } from 'react';
 
-import useClamp from '@/hooks/useClamp';
+import useClone from '@/hooks/atomic/useClone';
+import useLineCount from '@/hooks/atomic/useLineCount';
+import useClamp from '@/hooks/features/useClamp';
 
-type LineClampContextValue = ReturnType<typeof useClamp> & {
+type LineClampContextValue = {
   text: string;
   maxLines: number;
+  isClamped: boolean;
+  isExpanded: boolean;
+  toggle: () => void;
+  targetRef: ReturnType<typeof useClone>['targetRef'];
+  cloneRef: ReturnType<typeof useClone>['cloneRef'];
+};
+
+type LineClampRootProps = {
+  text: string;
+  maxLines?: number;
+  children: ReactNode;
 };
 
 const LineClampContext = createContext<LineClampContextValue | null>(null);
 
-type LineClampRootProps = {
-  text: string;
-  maxLines: number;
-  children: ReactNode;
-};
-
 const useLineClampContext = () => {
-  const ctx = useContext(LineClampContext);
+  const context = useContext(LineClampContext);
 
-  if (!ctx) throw new Error('LineClamp compound components must be used within <LineClampRoot />');
+  if (!context) throw new Error('LineClamp compound components must be used within <LineClampRoot />');
 
-  return ctx;
+  return context;
 };
 
-const LineClampRoot = ({ text, maxLines, children }: LineClampRootProps) => {
-  const clamp = useClamp({ text, maxLines });
-  const value = useMemo(() => {
-    return { ...clamp, text, maxLines };
-  }, [clamp, text, maxLines]);
+const LineClampRoot = ({ text, maxLines = 3, children }: LineClampRootProps) => {
+  const { targetRef, cloneRef } = useClone<HTMLDivElement>();
+
+  const lineCount = useLineCount({ targetRef: cloneRef, text });
+
+  const { isClamped, isExpanded, toggle } = useClamp({
+    targetRef,
+    lineCount,
+    maxLines,
+  });
+
+  const value = useMemo<LineClampContextValue>(
+    () => ({
+      text,
+      maxLines,
+      isClamped,
+      isExpanded,
+      toggle,
+      targetRef,
+      cloneRef,
+    }),
+    [text, maxLines, isClamped, toggle, targetRef, cloneRef],
+  );
 
   return <LineClampContext.Provider value={value}>{children}</LineClampContext.Provider>;
 };

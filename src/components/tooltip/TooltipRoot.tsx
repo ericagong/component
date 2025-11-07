@@ -4,7 +4,7 @@ import type { ReactNode, CSSProperties } from 'react';
 import cx from './cx';
 
 import useDisclosure from '@/hooks/atomic/useDisclosure';
-import useFloating from '@/hooks/useFloating';
+import useFloating from '@/hooks/features/useFloating';
 
 type TooltipContextValue = {
   isOpen: boolean;
@@ -23,13 +23,13 @@ type TooltipRootProps = {
 const TooltipContext = createContext<TooltipContextValue | null>(null);
 
 export const useTooltipContext = () => {
-  const ctx = useContext(TooltipContext);
+  const context = useContext(TooltipContext);
 
-  if (!ctx) {
+  if (!context) {
     throw new Error('Tooltip compound components must be used within <TooltipRoot>');
   }
 
-  return ctx;
+  return context;
 };
 
 const TooltipRoot = ({ children, className }: TooltipRootProps) => {

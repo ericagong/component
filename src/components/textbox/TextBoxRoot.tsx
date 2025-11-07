@@ -22,11 +22,11 @@ const TextBoxRoot = ({ minRows = 3, maxRows = 15, children }: TextBoxRootProps) 
 };
 
 const useTextBoxContext = () => {
-  const ctx = useContext(TextBoxContext);
+  const context = useContext(TextBoxContext);
 
-  if (!ctx) throw new Error('TextBox compound components must be used within <TextBoxRoot>');
+  if (!context) throw new Error('TextBox compound components must be used within <TextBoxRoot>');
 
-  return ctx;
+  return context;
 };
 
 export default TextBoxRoot;

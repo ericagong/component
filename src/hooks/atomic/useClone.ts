@@ -1,9 +1,5 @@
 import { useLayoutEffect, useRef } from 'react';
-
-type UseCloneReturn<T extends HTMLElement> = {
-  targetRef: React.RefObject<T | null>;
-  cloneRef: React.RefObject<T | null>;
-};
+import type { RefObject } from 'react';
 
 const copyProps = [
   'box-sizing',
@@ -14,17 +10,24 @@ const copyProps = [
   'font-family',
   'font-size',
   'font-weight',
+  'font-style',
+  'line-height',
   'letter-spacing',
   'word-spacing',
-  'line-height',
   'text-indent',
   'text-transform',
   'white-space',
   'overflow-wrap',
   'word-break',
-];
+  'hyphens',
+] as const;
 
-const useClone = <T extends HTMLElement>(): UseCloneReturn<T> => {
+type UseCloneReturn<T extends HTMLElement> = {
+  targetRef: RefObject<T | null>;
+  cloneRef: RefObject<T | null>;
+};
+
+const useClone = <T extends HTMLElement = HTMLElement>(): UseCloneReturn<T> => {
   const targetRef = useRef<T | null>(null);
   const cloneRef = useRef<T | null>(null);
 
@@ -40,7 +43,7 @@ const useClone = <T extends HTMLElement>(): UseCloneReturn<T> => {
       const value = style.getPropertyValue(prop);
 
       if (value) {
-        // @ts-expect-error: dynamic style copy
+        // @ts-expect-error: dynamic style assignment
         $clone.style[prop] = value;
       }
     }
@@ -56,7 +59,7 @@ const useClone = <T extends HTMLElement>(): UseCloneReturn<T> => {
       whiteSpace: 'pre-wrap',
       wordBreak: 'break-word',
     });
-  });
+  }, []);
 
   return { targetRef, cloneRef };
 };
