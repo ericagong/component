@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { RefObject } from 'react';
 
-type VisibilityEntry = Pick<IntersectionObserverEntry, 'target' | 'isIntersecting'>;
+type VisibilityEntry = Pick<IntersectionObserverEntry, 'target' | 'isIntersecting' | 'boundingClientRect'>;
 
 type UseElementsVisibilityOptions = {
   once?: boolean;
