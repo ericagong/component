@@ -21,6 +21,18 @@ export const Default: Story = {
       <Snackbar.Panel>기본 스낵바입니다.</Snackbar.Panel>
     </Snackbar>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+        <Snackbar>
+          <Snackbar.Trigger label='Show Snackbar' />
+          <Snackbar.Panel>기본 스낵바입니다.</Snackbar.Panel>
+        </Snackbar>
+        `,
+      },
+    },
+  },
 };
 
 export const WithCustomDuration: Story = {

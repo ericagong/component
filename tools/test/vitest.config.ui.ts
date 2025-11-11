@@ -10,6 +10,11 @@ const dirname = typeof __dirname !== 'undefined' ? __dirname : path.dirname(file
 const root = path.resolve(dirname, '../..');
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      '@': path.join(root, 'src'),
+    },
+  },
   test: {
     name: 'ui',
     globals: true,

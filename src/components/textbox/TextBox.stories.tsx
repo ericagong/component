@@ -16,6 +16,17 @@ export const Basic: Story = {
       <TextBox.Area placeholder='최소 3줄, 최대 5줄까지' />
     </TextBox>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+        <TextBox>
+          <TextBox.Area placeholder='최소 3줄, 최대 5줄까지' />
+        </TextBox>
+        `,
+      },
+    },
+  },
 };
 
 export const LimitedRange: Story = {

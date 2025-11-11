@@ -2,6 +2,7 @@
 
 import '../src/styles/index.scss';
 import type { Preview } from '@storybook/react-vite';
+import React from 'react';
 
 const preview: Preview = {
   tags: ['autodocs'],
@@ -9,7 +10,7 @@ const preview: Preview = {
     docs: {
       toc: true,
       source: {
-        type: 'auto',
+        type: 'code',
       },
       canvas: {
         sourceState: 'shown',

@@ -20,6 +20,18 @@ export const Default: Story = {
       <Tooltip.Content>이건 툴팁 내용입니다</Tooltip.Content>
     </Tooltip>
   ),
+  parameters: {
+    docs: {
+      source: {
+        code: `
+        <Tooltip>
+          <Tooltip.Trigger>툴팁 버튼</Tooltip.Trigger>
+          <Tooltip.Content>이건 툴팁 내용입니다</Tooltip.Content>
+        </Tooltip>
+        `,
+      },
+    },
+  },
 };
 
 export default meta;
