@@ -1,22 +1,24 @@
 import { useEffect } from 'react';
 
 type UseEscapeCloseParams = {
-  isOpen: boolean;
-  close: () => void;
+  shouldCloseOnEscape: boolean;
+  onClose: () => void;
 };
 
-const useEscapeClose = ({ isOpen, close }: UseEscapeCloseParams) => {
+const useEscapeClose = ({ shouldCloseOnEscape, onClose }: UseEscapeCloseParams) => {
   useEffect(() => {
-    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!shouldCloseOnEscape) return;
 
-    const onCloseHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') close();
+      if (e.key !== 'Escape') return;
+
+      onClose();
     };
 
-    document.addEventListener('keydown', onCloseHandler);
+    document.addEventListener('keydown', handleKeyDown);
 
-    return () => document.removeEventListener('keydown', onCloseHandler);
-  }, [isOpen, close]);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [shouldCloseOnEscape, onClose]);
 };
 
 export default useEscapeClose;

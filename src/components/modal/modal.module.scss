@@ -18,9 +18,12 @@ $border-black: #242424;
 .modal-overlay {
   position: fixed;
   inset: 0;
+  pointer-events: auto;
+}
+
+.modal-overlay.dimmed {
   background-color: $dimmed;
   backdrop-filter: blur(2px);
-  pointer-events: auto;
 }
 
 .modal-panel {

@@ -41,7 +41,7 @@ export const Alert: Story = {
         <AlertModal
           id='alert-1'
           isOpen={alertOpen}
-          close={() => setAlertOpen(false)}
+          onClose={() => setAlertOpen(false)}
           content='이것은 알림 모달입니다.'
         />
       </div>
@@ -65,7 +65,7 @@ export const Confirm: Story = {
           id='confirm-1'
           isOpen={confirmOpen}
           isConfirmed={isConfirmed}
-          close={() => setConfirmOpen(false)}
+          onClose={() => setConfirmOpen(false)}
           onConfirm={() => {
             setIsConfirmed(true);
             setConfirmOpen(false);
@@ -101,7 +101,7 @@ export const Form: Story = {
         <FormModal
           id='form-1'
           isOpen={formOpen}
-          close={() => setFormOpen(false)}
+          onClose={() => setFormOpen(false)}
           onSubmit={(data) => {
             const obj = Object.fromEntries(data.entries());
             setSubmitted(obj);
@@ -114,6 +114,69 @@ export const Form: Story = {
             <input type='checkbox' name='soldOut' />
           </label>
         </FormModal>
+      </div>
+    );
+  },
+};
+
+export const Nested: Story = {
+  render: () => {
+    const [parentOpen, setParentOpen] = useState(false);
+    const [childOpen, setChildOpen] = useState(false);
+
+    const closeParent = () => {
+      setChildOpen(false);
+      setParentOpen(false);
+    };
+
+    return (
+      <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <h3>Nested Modals</h3>
+        <button onClick={() => setParentOpen(true)}>부모 모달 열기</button>
+
+        <Modal id='parent-modal' isOpen={parentOpen} onClose={closeParent} closeOnClickOutside>
+          <Modal.Header title='부모 모달' onClose={closeParent} />
+          <Modal.Content>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px',
+                width: '600px',
+                height: '400px',
+              }}
+            >
+              <p>이 모달 안에서 또 다른 모달을 열 수 있습니다.</p>
+              <input type='text' placeholder='부모 모달 입력 필드' />
+              <button type='button'>부모 모달 액션 버튼 1</button>
+              <button type='button'>부모 모달 액션 버튼 2</button>
+              <a
+                href='#'
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+              >
+                포커스 가능한 링크
+              </a>
+              <button type='button' onClick={() => setChildOpen(true)}>
+                자식 모달 열기
+              </button>
+            </div>
+          </Modal.Content>
+          <Modal.Footer>
+            <button onClick={closeParent}>닫기</button>
+          </Modal.Footer>
+        </Modal>
+
+        <Modal id='child-modal' isOpen={childOpen} onClose={() => setChildOpen(false)} closeOnClickOutside>
+          <Modal.Header title='자식 모달' onClose={() => setChildOpen(false)} />
+          <Modal.Content>
+            <p>이 모달이 최상단이기 때문에 배경 딤 처리가 이 모달에만 적용됩니다.</p>
+          </Modal.Content>
+          <Modal.Footer>
+            <button onClick={() => setChildOpen(false)}>자식 모달 닫기</button>
+          </Modal.Footer>
+        </Modal>
       </div>
     );
   },

@@ -9,13 +9,13 @@ type ConfirmModalProps = {
   isConfirmed: boolean | null;
   onConfirm: () => void;
   onCancel: () => void;
-  close: () => void;
+  onClose: () => void;
 };
 
-const ConfirmModal = ({ id, isOpen, children, isConfirmed, onConfirm, onCancel, close }: ConfirmModalProps) => {
+const ConfirmModal = ({ id, isOpen, children, isConfirmed, onConfirm, onCancel, onClose }: ConfirmModalProps) => {
   return (
-    <Modal id={id} isOpen={isOpen} close={close}>
-      <Modal.Header title={`#${id}. ${isConfirmed ? '확인된 컨펌' : '확인되지 않은 컨펌'}`} close={close} />
+    <Modal id={id} isOpen={isOpen} onClose={onClose}>
+      <Modal.Header title={`#${id}. ${isConfirmed ? '확인된 컨펌' : '확인되지 않은 컨펌'}`} onClose={onClose} />
       <Modal.Content>{children}</Modal.Content>
       <Modal.Footer>
         <button onClick={onConfirm}>확인</button>

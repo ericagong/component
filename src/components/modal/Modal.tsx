@@ -8,18 +8,20 @@ import usePortalRoot from '@/hooks/atomic/usePortalRoot';
 import useFocusTrap from '@/hooks/atomic/useFocusTrap';
 import useScrollLock from '@/hooks/atomic/useScrollLock';
 import useEscapeClose from '@/hooks/atomic/useEscapeClose';
+import useModalManager from '@/hooks/features/useModalManager';
 
-type ModalProps = {
+type ModalRootProps = {
   id: string;
   isOpen: boolean;
-  close: () => void;
-  closeOnClickOutside?: boolean;
+  onClose: () => void;
+  shouldCloseOnClickOutside?: boolean;
   children: ReactNode;
 };
 
 type ModalOverlayProps = {
-  close: () => void;
-  closeOnClickOutside?: boolean;
+  onClose: () => void;
+  shouldCloseOnClickOutside?: boolean;
+  shouldDimmed?: boolean;
 };
 
 type ModalPanelProps = {
@@ -27,12 +29,12 @@ type ModalPanelProps = {
   children: ReactNode;
 };
 
-const ModalOverlay = ({ close, closeOnClickOutside }: ModalOverlayProps) => {
+const ModalOverlay = ({ onClose, shouldCloseOnClickOutside = true, shouldDimmed }: ModalOverlayProps) => {
   const handleClick = () => {
-    if (closeOnClickOutside) close();
+    if (shouldCloseOnClickOutside) onClose();
   };
 
-  return <div className={cx('modal-overlay')} onClick={handleClick} />;
+  return <div className={cx('modal-overlay', shouldDimmed && 'dimmed')} onClick={handleClick} />;
 };
 
 const ModalPanel = ({ panelRef, children }: ModalPanelProps) => {
@@ -43,29 +45,30 @@ const ModalPanel = ({ panelRef, children }: ModalPanelProps) => {
   );
 };
 
-const ModalRoot = ({ isOpen, close, closeOnClickOutside, children }: ModalProps) => {
-  const $portalRoot = usePortalRoot('modals-root');
-
+const ModalRoot = ({ id, isOpen, onClose, shouldCloseOnClickOutside, children }: ModalRootProps) => {
+  const portalRoot = usePortalRoot('modals-root');
   const panelRef = useRef<HTMLDivElement>(null);
 
-  useFocusTrap({ isOpen, targetRef: panelRef });
-  useScrollLock({ isOpen });
-  useEscapeClose({ isOpen, close });
+  const { isTop } = useModalManager({ id, isOpen });
 
-  if (!isOpen || !$portalRoot) return null;
+  useFocusTrap({ shouldTrapOnFocus: isOpen && isTop, targetRef: panelRef });
+  useEscapeClose({ shouldCloseOnEscape: isOpen && isTop, onClose });
+  useScrollLock({ shouldLockScroll: isOpen && isTop });
+
+  if (!isOpen || !portalRoot) return null;
 
   return createPortal(
     <div className={cx('modal-root')}>
-      <ModalOverlay close={close} closeOnClickOutside={closeOnClickOutside} />
+      <ModalOverlay onClose={onClose} shouldCloseOnClickOutside={shouldCloseOnClickOutside} shouldDimmed={isTop} />
       <ModalPanel panelRef={panelRef}>{children}</ModalPanel>
     </div>,
-    $portalRoot,
+    portalRoot,
   );
 };
 
 type ModalHeaderProps = {
   title?: string;
-  close?: () => void;
+  onClose?: () => void;
   children?: ReactNode;
 };
 
@@ -77,11 +80,11 @@ type ModalFooterProps = {
   children: ReactNode;
 };
 
-const ModalHeader = ({ title, children, close }: ModalHeaderProps) => (
+const ModalHeader = ({ title, children, onClose }: ModalHeaderProps) => (
   <div className={cx('modal-header')}>
     <div className={cx('title')}>{title}</div>
     {children}
-    <button className={cx('close-trigger')} onClick={close} />
+    <button className={cx('close-trigger')} onClick={onClose} />
   </div>
 );
 
@@ -89,6 +92,7 @@ const ModalContent = ({ children }: ModalContentProps) => <div className={cx('mo
 
 const ModalFooter = ({ children }: ModalFooterProps) => <div className={cx('modal-footer')}>{children}</div>;
 
+// Compound
 const Modal = Object.assign(ModalRoot, {
   Header: ModalHeader,
   Content: ModalContent,

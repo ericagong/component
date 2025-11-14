@@ -8,27 +8,27 @@ type FormModalProps = {
   children: ReactNode;
   onSubmit?: (formData: FormData) => void;
   onCancel?: () => void;
-  close: () => void;
+  onClose: () => void;
 };
 
-const FormModal = ({ id, isOpen, children, onSubmit, onCancel, close }: FormModalProps) => {
+const FormModal = ({ id, isOpen, children, onSubmit, onCancel, onClose }: FormModalProps) => {
   const formId = `form-${id}`;
 
   const handleSumbit = (e: SyntheticEvent) => {
     e.preventDefault();
     const data = new FormData(e.target as HTMLFormElement);
     onSubmit?.(data);
-    close();
+    onClose();
   };
 
   const handleClose = () => {
     onCancel?.();
-    close();
+    onClose();
   };
 
   return (
-    <Modal id={id} isOpen={isOpen} close={close} closeOnClickOutside>
-      <Modal.Header close={handleClose} />
+    <Modal id={id} isOpen={isOpen} onClose={close} shouldCloseOnClickOutside>
+      <Modal.Header onClose={handleClose} />
       <Modal.Content>
         <form id={formId} onSubmit={handleSumbit}>
           {children}

@@ -2,54 +2,50 @@ import { useEffect } from 'react';
 import type { RefObject } from 'react';
 
 type UseFocusTrapParams = {
-  isOpen: boolean;
+  shouldTrapOnFocus: boolean;
   targetRef: RefObject<HTMLElement | null>;
 };
 
 const FOCUSABLE_SELECTOR = 'a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])';
 
-// TODO 향후 중첩 모달로 확장 시 변경 (현재 단일 모달 가정)
-const useFocusTrap = ({ isOpen, targetRef }: UseFocusTrapParams) => {
-  useEffect(() => {
-    if (!isOpen) return;
+const trapFocus = ({ e, $target }: { e: KeyboardEvent; $target: HTMLElement }) => {
+  if (e.key !== 'Tab') return;
 
-    const $target = targetRef.current;
+  const $focusables = [...$target.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)];
 
-    if (!$target) return;
+  if ($focusables.length === 0) return;
 
-    const $focusables = [...$target.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)];
+  const $firstFocusable = $focusables[0];
+  const $lastFocusable = $focusables[$focusables.length - 1];
+  const $currentFocused = document.activeElement;
 
-    if ($focusables.length === 0) return;
-
-    const $firstFocusable = $focusables[0];
-    const $lastFocusable = $focusables[$focusables.length - 1];
-
+  if (e.shiftKey && $currentFocused === $firstFocusable) {
+    // firstFocusable에서 shift + tab을 누른 경우, last focusable로 이동
+    e.preventDefault();
+    $lastFocusable.focus();
+  } else if (!e.shiftKey && $currentFocused === $lastFocusable) {
+    // lastFocusable에서 tab을 누른 경우, first focusable로 이동
+    e.preventDefault();
     $firstFocusable.focus();
+  }
+};
 
-    const onFocusTrapHandler = (e: KeyboardEvent) => {
-      if (e.key !== 'Tab') return;
+const useFocusTrap = ({ shouldTrapOnFocus, targetRef }: UseFocusTrapParams) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!shouldTrapOnFocus) return;
 
-      const $currentFocused = document.activeElement;
+      const $target = targetRef.current;
 
-      if (e.shiftKey) {
-        // firstFocusable에서 shift + tab을 누른 경우, last focusable로 이동
-        if ($currentFocused === $firstFocusable) {
-          e.preventDefault();
-          $lastFocusable.focus();
-        }
-      } else {
-        // lastFocusable에서 tab을 누른 경우, first focusable로 이동
-        if ($currentFocused === $lastFocusable) {
-          e.preventDefault();
-          $firstFocusable.focus();
-        }
-      }
+      if (!$target) return;
+
+      trapFocus({ e, $target });
     };
 
-    document.addEventListener('keydown', onFocusTrapHandler);
+    document.addEventListener('keydown', handleKeyDown);
 
-    return () => document.removeEventListener('keydown', onFocusTrapHandler);
-  }, [isOpen, targetRef]);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [shouldTrapOnFocus, targetRef]);
 };
 
 export default useFocusTrap;

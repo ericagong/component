@@ -1,23 +1,37 @@
 import { useEffect } from 'react';
 
 type UseScrollLockParams = {
-  isOpen: boolean;
+  shouldLockScroll: boolean;
 };
+
+let lockCount = 0;
+let overflowContext: string | null = null;
 
 const SCROLL_LOCK_STYLE = 'hidden';
 
-const useScrollLock = ({ isOpen }: UseScrollLockParams) => {
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const overflowContext = document.body.style.overflow;
-
+const lockScroll = () => {
+  if (lockCount === 0) {
+    overflowContext = document.body.style.overflow;
     document.body.style.overflow = SCROLL_LOCK_STYLE;
+  }
+  lockCount++;
+};
 
-    return () => {
-      document.body.style.overflow = overflowContext;
-    };
-  }, [isOpen]);
+const unlockScroll = () => {
+  lockCount--;
+  if (lockCount === 0) {
+    document.body.style.overflow = overflowContext ?? '';
+  }
+};
+
+const useScrollLock = ({ shouldLockScroll }: UseScrollLockParams) => {
+  useEffect(() => {
+    if (!shouldLockScroll) return;
+
+    lockScroll();
+
+    return () => unlockScroll();
+  }, [shouldLockScroll]);
 };
 
 export default useScrollLock;
