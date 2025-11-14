@@ -10,6 +10,7 @@ type UseFloatingReturn = {
   setAnchor: ($target: HTMLElement | null) => void;
   setFloating: ($target: HTMLElement | null) => void;
   style: CSSProperties;
+  updatePosition: () => void;
 };
 
 const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
@@ -85,7 +86,7 @@ const useFloating = (options: UseFloatingParams = {}): UseFloatingReturn => {
     };
   }, [updatePosition]);
 
-  return { setAnchor, setFloating, style };
+  return { setAnchor, setFloating, style, updatePosition };
 };
 
 export default useFloating;

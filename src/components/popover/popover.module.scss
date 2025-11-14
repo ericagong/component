@@ -1,0 +1,41 @@
+$border-gray: #ccc;
+$tooltip-bg-gray: #fff;
+$trigger-bg-gray: #ccc;
+
+.popover-trigger {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  background-color: $trigger-bg-gray;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.popover-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: transparent;
+}
+
+.popover-panel {
+  position: fixed;
+  z-index: 2;
+  display: inline-block;
+  padding: 10px;
+  background-color: $tooltip-bg-gray;
+  border: 1px solid $border-gray;
+  border-radius: 4px;
+  opacity: 0;
+  transition:
+    opacity 0.15s ease-out,
+    visibility 0.15s ease-out;
+  pointer-events: none;
+  visibility: hidden;
+
+  &.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+  }
+}

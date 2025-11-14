@@ -1,14 +1,15 @@
+import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 import cx from './cx';
 import { useTooltipContext } from './TooltipRoot';
 
 type TooltipContentProps = {
-  children: React.ReactNode;
   className?: string;
+  children: ReactNode;
 };
 
-const TooltipContent = ({ children, className }: TooltipContentProps) => {
+const TooltipContent = ({ className, children }: TooltipContentProps) => {
   const { isOpen, setFloating, style } = useTooltipContext();
 
   return createPortal(
