@@ -134,7 +134,7 @@ export const Nested: Story = {
         <h3>Nested Modals</h3>
         <button onClick={() => setParentOpen(true)}>부모 모달 열기</button>
 
-        <Modal id='parent-modal' isOpen={parentOpen} onClose={closeParent} closeOnClickOutside>
+        <Modal id='parent-modal' isOpen={parentOpen} onClose={closeParent}>
           <Modal.Header title='부모 모달' onClose={closeParent} />
           <Modal.Content>
             <div
@@ -168,7 +168,7 @@ export const Nested: Story = {
           </Modal.Footer>
         </Modal>
 
-        <Modal id='child-modal' isOpen={childOpen} onClose={() => setChildOpen(false)} closeOnClickOutside>
+        <Modal id='child-modal' isOpen={childOpen} onClose={() => setChildOpen(false)}>
           <Modal.Header title='자식 모달' onClose={() => setChildOpen(false)} />
           <Modal.Content>
             <p>이 모달이 최상단이기 때문에 배경 딤 처리가 이 모달에만 적용됩니다.</p>
