@@ -1,0 +1,122 @@
+.carousel-container {
+  position: relative;
+  width: 600px;
+  margin: 0 auto;
+
+  .carousel-viewport {
+    overflow-x: scroll;
+    -ms-overflow-style: none;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .carousel-track {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+
+  .slide {
+    position: relative;
+    flex: 0 0 100%;
+
+    img {
+      display: block;
+      width: 100%;
+    }
+
+    span {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      padding: 3px 8px;
+      font-size: 1.5rem;
+      color: white;
+      background: rgb(0 0 0 / 40%);
+    }
+  }
+
+  .nav-button {
+    position: absolute;
+    top: 50%;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    background-color: #333;
+    border: none;
+    border-radius: 50%;
+    opacity: 0.3;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &::before,
+    &::after {
+      position: absolute;
+      top: 5px;
+      width: 6px;
+      height: 17px;
+      background-color: #fff;
+      content: '';
+      transform-origin: 3px 14px;
+    }
+  }
+
+  .nav-left {
+    left: 10px;
+
+    &::before,
+    &::after {
+      left: 11px;
+    }
+
+    &::before {
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      transform: rotate(135deg);
+    }
+  }
+
+  .nav-right {
+    right: 10px;
+
+    &::before,
+    &::after {
+      right: 11px;
+    }
+
+    &::before {
+      transform: rotate(-45deg);
+    }
+
+    &::after {
+      transform: rotate(-135deg);
+    }
+  }
+
+  .pagination {
+    margin-top: 10px;
+    text-align: center;
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      margin: 0 5px;
+      background: #ccc;
+      border: none;
+      border-radius: 50%;
+
+      &.active {
+        background: #333;
+      }
+    }
+  }
+}

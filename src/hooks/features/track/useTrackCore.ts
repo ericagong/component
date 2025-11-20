@@ -9,6 +9,7 @@ type UseTrackCoreParams = {
 };
 
 type UseTrackCoreReturn = {
+  viewportRef: RefObject<HTMLDivElement | null>;
   trackRef: RefObject<HTMLDivElement | null>;
   currentIndex: number;
   next: () => void;
@@ -18,7 +19,9 @@ type UseTrackCoreReturn = {
 };
 
 const useTrackCore = ({ slideCount, mode = 'slider' }: UseTrackCoreParams): UseTrackCoreReturn => {
+  const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const setSafeIndex = useCallback(
@@ -33,12 +36,14 @@ const useTrackCore = ({ slideCount, mode = 'slider' }: UseTrackCoreParams): UseT
   const movement = useTrackMovement({
     mode,
     trackRef,
+    viewportRef,
     getIndex: () => currentIndex,
     setIndex: setSafeIndex,
     slideCount,
   });
 
   return {
+    viewportRef,
     trackRef,
     currentIndex,
     next: movement.next,
