@@ -1,48 +1,50 @@
-import { useRef, useState, useCallback, useLayoutEffect } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import type { RefObject } from 'react';
 
+import useTrackMovement from './core/useTrackMovement';
+
 type UseTrackCoreParams = {
+  mode: 'slider' | 'carousel';
   slideCount: number;
 };
 
 type UseTrackCoreReturn = {
   trackRef: RefObject<HTMLDivElement | null>;
   currentIndex: number;
-  goTo: (index: number) => void;
   next: () => void;
   prev: () => void;
+  goTo: (index: number) => void;
+  moveBy: (offset: number) => void; // drag/swipe
 };
 
-const useTrackCore = ({ slideCount }: UseTrackCoreParams): UseTrackCoreReturn => {
+const useTrackCore = ({ slideCount, mode = 'slider' }: UseTrackCoreParams): UseTrackCoreReturn => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const goTo = useCallback(
+  const setSafeIndex = useCallback(
     (index: number) => {
-      const clamped = Math.max(0, Math.min(index, slideCount - 1));
-      setCurrentIndex(clamped);
+      const clampedIndex = Math.max(0, Math.min(index, slideCount - 1));
+
+      setCurrentIndex(clampedIndex);
     },
     [slideCount],
   );
 
-  const next = useCallback(() => goTo(currentIndex + 1), [currentIndex, goTo]);
-  const prev = useCallback(() => goTo(currentIndex - 1), [currentIndex, goTo]);
-
-  useLayoutEffect(() => {
-    const $track = trackRef.current;
-
-    if (!$track) return;
-
-    $track.style.transition = 'transform 0.3s ease';
-    $track.style.transform = `translateX(-${currentIndex * 100}%)`;
-  }, [currentIndex]);
+  const movement = useTrackMovement({
+    mode,
+    trackRef,
+    getIndex: () => currentIndex,
+    setIndex: setSafeIndex,
+    slideCount,
+  });
 
   return {
     trackRef,
     currentIndex,
-    goTo,
-    next,
-    prev,
+    next: movement.next,
+    prev: movement.prev,
+    goTo: movement.goTo,
+    moveBy: movement.moveBy,
   };
 };
 

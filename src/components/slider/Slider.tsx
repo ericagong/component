@@ -6,6 +6,7 @@ const slides = [1, 2, 3, 4, 5];
 
 const Slider = () => {
   const { next, prev, trackRef } = useTrackCore({
+    mode: 'slider',
     slideCount: slides.length,
   });
 
